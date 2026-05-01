@@ -478,8 +478,11 @@
                 const mv = parseFloat(row.getAttribute('data-mv'));
                 const damageBase = totalAtk * (mv / 100) * (physHz / 100) * sharpMult;
 
-                row.querySelector('.res-normal').textContent = Math.floor(damageBase);
-                row.querySelector('.res-critical').textContent = Math.floor(damageBase * 1.25);
+                // 通常ダメージと会心ダメージを小数第1位までに変更
+                row.querySelector('.res-normal').textContent = damageBase.toFixed(1);
+                row.querySelector('.res-critical').textContent = (damageBase * 1.25).toFixed(1);
+
+                // 期待値
                 const expected = (damageBase * (1 - critDec)) + (damageBase * 1.25 * critDec);
                 row.querySelector('.res-expected').textContent = expected.toFixed(1);
             });

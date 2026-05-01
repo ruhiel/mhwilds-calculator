@@ -309,6 +309,10 @@
                         </div>
                     </div>
                     <div>
+                        <label>実効属性値</label>
+                        <div id="displayEffElem" style="font-size: 18px; font-weight: bold; color: #a0d911;">0</div>
+                    </div>
+                    <div>
                         <label>実効会心率</label>
                         <div id="displayEffCrit" style="font-size: 20px; font-weight: bold; color: var(--accent-red);">
                             0%</div>
@@ -468,6 +472,7 @@
             document.getElementById('displayTotalAtk').textContent = totalAtk.toFixed(1);
             document.getElementById('displayEffAtk').textContent = (totalAtk * sharpPhys * (1 + 0.25 * critDec)).toFixed(1);
             document.getElementById('displayEffCrit').textContent = cappedCrit + '%';
+            document.getElementById('displayEffElem').textContent = baseElem * 0.1 * sharpElem;
 
             const physHz = parseFloat(inputPhysHz.value) || 0;
             const elemHz = parseFloat(inputElemHz.value) || 0;

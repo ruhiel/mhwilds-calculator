@@ -377,6 +377,14 @@
                             <div class="option-item" data-lv="Lv 5" data-add="20">Lv 5</div>
                         </div>
                     </div>
+                    <!-- ヌシの魂 (追加) -->
+                    <div style="display: flex; align-items: center; gap: 8px; padding: 5px;">
+                        <input type="checkbox" id="checkNushi" checked style="width: auto; cursor: pointer;">
+                        <label for="checkNushi"
+                            style="margin-bottom: 0; cursor: pointer; color: var(--text-main); font-weight: bold;">
+                            ヌシの魂 (x1.05)
+                        </label>
+                    </div>
                 </div>
             </div>
 
@@ -480,6 +488,67 @@
                     </div>
                 </div>
             </div>
+
+            <div class="card">
+                <div class="card-header">消費アイテム・食事効果</div>
+                <div class="skills-row-grid">
+                    <div class="skill-container">
+                        <div class="skill-selector" id="buffTrigger">
+                            <span class="skill-name">アイテム・食事</span>
+                            <span class="skill-level-preview">食事のお誘い</span>
+                            <span class="skill-dropdown-arrow">▼</span>
+                        </div>
+                        <div class="skill-options" id="buffMenu">
+                            <div class="option-item" data-lv="未選択" data-add="0">未選択</div>
+                            <div class="option-item" data-lv="焚き火料理" data-add="2">焚き火料理 (+2)</div>
+                            <div class="option-item selected" data-lv="食事のお誘い" data-add="5">食事のお誘い (+5)</div>
+                        </div>
+                    </div>
+                    <!-- 力の護符チェックボックス (追加) -->
+                    <div style="display: flex; align-items: center; gap: 8px; padding: 5px;">
+                        <input type="checkbox" id="checkCharm" checked style="width: auto; cursor: pointer;">
+                        <label for="checkCharm"
+                            style="margin-bottom: 0; cursor: pointer; color: var(--text-main); font-weight: bold;">
+                            力の護符 (+6)
+                        </label>
+                    </div>
+                    <div class="skill-container">
+                        <div class="skill-selector" id="drugTrigger">
+                            <span class="skill-name">鬼人薬</span>
+                            <span class="skill-level-preview">鬼人薬G</span>
+                            <span class="skill-dropdown-arrow">▼</span>
+                        </div>
+                        <div class="skill-options" id="drugMenu">
+                            <div class="option-item" data-lv="未選択" data-add="0">未選択</div>
+                            <div class="option-item" data-lv="鬼人薬" data-add="5">鬼人薬 (+5)</div>
+                            <div class="option-item selected" data-lv="鬼人薬G" data-add="7">鬼人薬G (+7)</div>
+                        </div>
+                    </div>
+                    <div class="skill-container">
+                        <div class="skill-selector" id="seedTrigger">
+                            <span class="skill-name">種・丸薬</span>
+                            <span class="skill-level-preview">怪力の種</span>
+                            <span class="skill-dropdown-arrow">▼</span>
+                        </div>
+                        <div class="skill-options" id="seedMenu">
+                            <div class="option-item" data-lv="未選択" data-add="0">未選択</div>
+                            <div class="option-item selected" data-lv="怪力の種" data-add="10">怪力の種 (+10)</div>
+                            <div class="option-item" data-lv="鬼人の丸薬" data-add="25">鬼人の丸薬 (+25)</div>
+                        </div>
+                    </div>
+                    <div class="skill-container">
+                        <div class="skill-selector" id="powderTrigger">
+                            <span class="skill-name">鬼人の粉塵</span>
+                            <span class="skill-level-preview">鬼人の粉塵</span>
+                            <span class="skill-dropdown-arrow">▼</span>
+                        </div>
+                        <div class="skill-options" id="powderMenu">
+                            <div class="option-item" data-lv="未選択" data-add="0">未選択</div>
+                            <div class="option-item selected" data-lv="鬼人の粉塵" data-add="10">鬼人の粉塵 (+10)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="right-col">
@@ -558,6 +627,8 @@
         const inputPhysHz = document.getElementById('inputPhysHz');
         const inputElemHz = document.getElementById('inputElemHz');
         const tableBody = document.getElementById('motionTableBody');
+        const checkNushi = document.getElementById('checkNushi');
+        const checkCharm = document.getElementById('checkCharm');
 
         let skillAtkMult = 1.0;
         let skillAtkAdd = 0;
@@ -571,6 +642,10 @@
         let fullChargeAdd = 0;
         let rengekiAtkAdd = 0; // 連撃物理
         let rengekiElemAdd = 0; // 連撃属性
+        let buffAdd = 5; // 初期値：食事のお誘い (+5)
+        let drugAdd = 7;   // 鬼人薬G (デフォルト)
+        let seedAdd = 10;  // 怪力の種 (デフォルト)
+        let powderAdd = 10; // デフォルトで鬼人の粉塵 (+10) を設定
 
         window.stepHz = function (id, delta) {
             const el = document.getElementById(id);
@@ -595,11 +670,10 @@
             const baseCrit = parseFloat(inputCrit.value) || 0;
             const sharpPhys = parseFloat(inputSharp.value);
             const sharpElem = parseFloat(inputSharp.options[inputSharp.selectedIndex].getAttribute('data-elem'));
+            const charmAdd = checkCharm.checked ? 6 : 0;
+            const nushiMult = checkNushi.checked ? 1.05 : 1.0;
 
-            // 物理攻撃力の計算 (加算枠に連撃を追加)
-            const totalAtk = (baseAtk * skillAtkMult * shuseiMult) + skillAtkAdd + challengerAtkAdd + fullChargeAdd + rengekiAtkAdd;
-
-            // 属性値の計算 (基礎値に連撃加算を足してから計算)
+            const totalAtk = Math.floor((baseAtk * skillAtkMult * shuseiMult * nushiMult) + skillAtkAdd + challengerAtkAdd + fullChargeAdd + rengekiAtkAdd + buffAdd + charmAdd + drugAdd + seedAdd + powderAdd);
             const totalElem = (baseElem + rengekiElemAdd);
             const effElemDisplay = totalElem * 0.1 * sharpElem;
 
@@ -607,7 +681,7 @@
             const cappedCrit = Math.min(100, Math.max(0, rawCrit));
             const critDec = cappedCrit / 100;
 
-            document.getElementById('displayTotalAtk').textContent = totalAtk.toFixed(1);
+            document.getElementById('displayTotalAtk').textContent = totalAtk;
             const effAtk = totalAtk * sharpPhys * (1 + (critDamageMult - 1) * critDec);
             document.getElementById('displayEffAtk').textContent = effAtk.toFixed(1);
             document.getElementById('displayEffCrit').textContent = cappedCrit + '%';
@@ -687,7 +761,20 @@
         setupDropdown('fullChargeTrigger', 'fullChargeMenu', (item) => {
             fullChargeAdd = parseInt(item.getAttribute('data-add'));
         });
-
+        setupDropdown('buffTrigger', 'buffMenu', (item) => {
+            buffAdd = parseInt(item.getAttribute('data-add'));
+        });
+        setupDropdown('drugTrigger', 'drugMenu', (item) => {
+            drugAdd = parseInt(item.getAttribute('data-add'));
+        });
+        setupDropdown('seedTrigger', 'seedMenu', (item) => {
+            seedAdd = parseInt(item.getAttribute('data-add'));
+        });
+        setupDropdown('powderTrigger', 'powderMenu', (item) => {
+            powderAdd = parseInt(item.getAttribute('data-add'));
+        });
+        checkCharm.addEventListener('change', calculate);
+        checkNushi.addEventListener('change', calculate);
         window.addEventListener('click', () => {
             document.querySelectorAll('.skill-options').forEach(m => m.classList.remove('show'));
         });

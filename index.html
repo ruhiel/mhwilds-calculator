@@ -333,21 +333,56 @@
 
             <div class="card">
                 <div class="card-header">攻撃力スキル</div>
-                <div class="skill-container">
-                    <div class="skill-selector is-empty" id="atkSkillTrigger">
-                        <span class="skill-name">攻撃</span>
-                        <span class="skill-level-preview">未選択</span>
-                        <span class="skill-dropdown-arrow">▼</span>
+                <div class="skills-row-grid">
+                    <div class="skill-container">
+                        <div class="skill-selector is-empty" id="atkSkillTrigger">
+                            <span class="skill-name">攻撃</span>
+                            <span class="skill-level-preview">未選択</span>
+                            <span class="skill-dropdown-arrow">▼</span>
+                        </div>
+                        <div class="skill-options" id="atkSkillMenu">
+                            <div class="option-item selected" data-lv="未選択" data-mult="1.0" data-add="0">未選択</div>
+                            <div class="option-item" data-lv="Lv 1" data-mult="1.0" data-add="3">Lv 1</div>
+                            <div class="option-item" data-lv="Lv 2" data-mult="1.0" data-add="5">Lv 2</div>
+                            <div class="option-item" data-lv="Lv 3" data-mult="1.0" data-add="7">Lv 3</div>
+                            <div class="option-item" data-lv="Lv 4" data-mult="1.02" data-add="8">Lv 4</div>
+                            <div class="option-item" data-lv="Lv 5" data-mult="1.04" data-add="9">Lv 5</div>
+                        </div>
                     </div>
-                    <div class="skill-options" id="atkSkillMenu">
-                        <div class="option-item selected" data-lv="未選択" data-mult="1.0" data-add="0">未選択</div>
-                        <div class="option-item" data-lv="Lv 1" data-mult="1.0" data-add="3">Lv 1</div>
-                        <div class="option-item" data-lv="Lv 2" data-mult="1.0" data-add="5">Lv 2</div>
-                        <div class="option-item" data-lv="Lv 3" data-mult="1.0" data-add="7">Lv 3</div>
-                        <div class="option-item" data-lv="Lv 4" data-mult="1.02" data-add="8">Lv 4</div>
-                        <div class="option-item" data-lv="Lv 5" data-mult="1.04" data-add="9">Lv 5</div>
+
+                    <!-- 攻めの守勢 -->
+                    <div class="skill-container">
+                        <div class="skill-selector is-empty" id="shuseiTrigger">
+                            <span class="skill-name">攻めの守勢</span>
+                            <span class="skill-level-preview">未選択</span>
+                            <span class="skill-dropdown-arrow">▼</span>
+                        </div>
+                        <div class="skill-options" id="shuseiMenu">
+                            <div class="option-item selected" data-lv="未選択" data-mult="1.0">未選択</div>
+                            <div class="option-item" data-lv="Lv 1" data-mult="1.05">Lv 1</div>
+                            <div class="option-item" data-lv="Lv 2" data-mult="1.10">Lv 2</div>
+                            <div class="option-item" data-lv="Lv 3" data-mult="1.15">Lv 3</div>
+                        </div>
+                    </div>
+
+                    <!-- フルチャージ -->
+                    <div class="skill-container">
+                        <div class="skill-selector is-empty" id="fullChargeTrigger">
+                            <span class="skill-name">フルチャージ</span>
+                            <span class="skill-level-preview">未選択</span>
+                            <span class="skill-dropdown-arrow">▼</span>
+                        </div>
+                        <div class="skill-options" id="fullChargeMenu">
+                            <div class="option-item selected" data-lv="未選択" data-add="0">未選択</div>
+                            <div class="option-item" data-lv="Lv 1" data-add="3">Lv 1</div>
+                            <div class="option-item" data-lv="Lv 2" data-add="6">Lv 2</div>
+                            <div class="option-item" data-lv="Lv 3" data-add="10">Lv 3</div>
+                            <div class="option-item" data-lv="Lv 4" data-add="15">Lv 4</div>
+                            <div class="option-item" data-lv="Lv 5" data-add="20">Lv 5</div>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
             <div class="card">
@@ -519,6 +554,8 @@
         let weakCritBonus = 0;
         let konshinCritBonus = 0; // 追加
         let critDamageMult = 1.25;
+        let shuseiMult = 1.0;
+        let fullChargeAdd = 0;
 
         window.stepHz = function (id, delta) {
             const el = document.getElementById(id);
@@ -544,7 +581,8 @@
             const sharpPhys = parseFloat(inputSharp.value);
             const sharpElem = parseFloat(inputSharp.options[inputSharp.selectedIndex].getAttribute('data-elem'));
 
-            const totalAtk = (baseAtk * skillAtkMult) + skillAtkAdd + challengerAtkAdd;
+            // 計算式
+            const totalAtk = (baseAtk * skillAtkMult * shuseiMult) + skillAtkAdd + challengerAtkAdd + fullChargeAdd;
             // 渾身ボーナスを合算に追加
             const rawCrit = baseCrit + challengerCritBonus + eyeCritBonus + weakCritBonus + konshinCritBonus;
             const cappedCrit = Math.min(100, Math.max(0, rawCrit));
@@ -620,7 +658,12 @@
         setupDropdown('cbTrigger', 'cbMenu', (item) => {
             critDamageMult = parseFloat(item.getAttribute('data-mult'));
         });
-
+        setupDropdown('shuseiTrigger', 'shuseiMenu', (item) => {
+            shuseiMult = parseFloat(item.getAttribute('data-mult'));
+        });
+        setupDropdown('fullChargeTrigger', 'fullChargeMenu', (item) => {
+            fullChargeAdd = parseInt(item.getAttribute('data-add'));
+        });
         window.addEventListener('click', () => {
             document.querySelectorAll('.skill-options').forEach(m => m.classList.remove('show'));
         });

@@ -54,10 +54,14 @@
             align-items: center;
         }
 
+        /* 隠す対象となる要素の共通スタイル */
+        .collapsible-body.hidden {
+            display: none;
+        }
+
         .skills-row-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            /* 2列に変更して渾身を追加しやすく調整 */
             gap: 10px;
         }
 
@@ -97,10 +101,6 @@
 
         .hz-btn:hover {
             color: var(--accent-blue);
-        }
-
-        .motion-card-body.hidden {
-            display: none;
         }
 
         .toggle-btn {
@@ -289,6 +289,7 @@
 
     <div class="container">
         <div class="left-col">
+            <!-- 武器設定・ステータスはそのまま -->
             <div class="card">
                 <div class="card-header">武器設定</div>
                 <div class="input-group">
@@ -335,221 +336,247 @@
                 </div>
             </div>
 
+            <!-- 【修正箇所】攻撃力スキルに隠すボタンを実装 -->
             <div class="card">
-                <div class="card-header">攻撃力スキル</div>
-                <div class="skills-row-grid">
-                    <div class="skill-container">
-                        <div class="skill-selector is-empty" id="atkSkillTrigger">
-                            <span class="skill-name">攻撃</span>
-                            <span class="skill-level-preview">未選択</span>
-                            <span class="skill-dropdown-arrow">▼</span>
-                        </div>
-                        <div class="skill-options" id="atkSkillMenu">
-                            <div class="option-item selected" data-lv="未選択" data-mult="1.0" data-add="0">未選択</div>
-                            <div class="option-item" data-lv="Lv 1" data-mult="1.0" data-add="3">Lv 1</div>
-                            <div class="option-item" data-lv="Lv 2" data-mult="1.0" data-add="5">Lv 2</div>
-                            <div class="option-item" data-lv="Lv 3" data-mult="1.0" data-add="7">Lv 3</div>
-                            <div class="option-item" data-lv="Lv 4" data-mult="1.02" data-add="8">Lv 4</div>
-                            <div class="option-item" data-lv="Lv 5" data-mult="1.04" data-add="9">Lv 5</div>
-                        </div>
-                    </div>
-                    <div class="skill-container">
-                        <div class="skill-selector is-empty" id="shuseiTrigger">
-                            <span class="skill-name">攻めの守勢</span>
-                            <span class="skill-level-preview">未選択</span>
-                            <span class="skill-dropdown-arrow">▼</span>
-                        </div>
-                        <div class="skill-options" id="shuseiMenu">
-                            <div class="option-item selected" data-lv="未選択" data-mult="1.0">未選択</div>
-                            <div class="option-item" data-lv="Lv 1" data-mult="1.05">Lv 1</div>
-                            <div class="option-item" data-lv="Lv 2" data-mult="1.10">Lv 2</div>
-                            <div class="option-item" data-lv="Lv 3" data-mult="1.15">Lv 3</div>
-                        </div>
-                    </div>
-                    <div class="skill-container">
-                        <div class="skill-selector is-empty" id="fullChargeTrigger">
-                            <span class="skill-name">フルチャージ</span>
-                            <span class="skill-level-preview">未選択</span>
-                            <span class="skill-dropdown-arrow">▼</span>
-                        </div>
-                        <div class="skill-options" id="fullChargeMenu">
-                            <div class="option-item selected" data-lv="未選択" data-add="0">未選択</div>
-                            <div class="option-item" data-lv="Lv 1" data-add="3">Lv 1</div>
-                            <div class="option-item" data-lv="Lv 2" data-add="6">Lv 2</div>
-                            <div class="option-item" data-lv="Lv 3" data-add="10">Lv 3</div>
-                            <div class="option-item" data-lv="Lv 4" data-add="15">Lv 4</div>
-                            <div class="option-item" data-lv="Lv 5" data-add="20">Lv 5</div>
-                        </div>
-                    </div>
-                    <!-- ヌシの魂 (追加) -->
-                    <div style="display: flex; align-items: center; gap: 8px; padding: 5px;">
-                        <input type="checkbox" id="checkNushi" checked style="width: auto; cursor: pointer;">
-                        <label for="checkNushi"
-                            style="margin-bottom: 0; cursor: pointer; color: var(--text-main); font-weight: bold;">
-                            ヌシの魂 (x1.05)
-                        </label>
-                    </div>
+                <div class="card-header">
+                    <span>攻撃力スキル</span>
+                    <button class="toggle-btn" id="toggleAtkSkills">
+                        <span id="toggleAtkIcon">▼</span>
+                    </button>
                 </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">会心系スキル</div>
-                <div class="skills-row-grid">
-                    <div class="skill-container">
-                        <div class="skill-selector is-empty" id="eyeTrigger">
-                            <span class="skill-name">見切り</span>
-                            <span class="skill-level-preview">未選択</span>
-                            <span class="skill-dropdown-arrow">▼</span>
+                <div class="collapsible-body" id="atkSkillsBody">
+                    <div class="skills-row-grid">
+                        <div class="skill-container">
+                            <div class="skill-selector is-empty" id="atkSkillTrigger">
+                                <span class="skill-name">攻撃</span>
+                                <span class="skill-level-preview">未選択</span>
+                                <span class="skill-dropdown-arrow">▼</span>
+                            </div>
+                            <div class="skill-options" id="atkSkillMenu">
+                                <div class="option-item selected" data-lv="未選択" data-mult="1.0" data-add="0">未選択</div>
+                                <div class="option-item" data-lv="Lv 1" data-mult="1.0" data-add="3">Lv 1</div>
+                                <div class="option-item" data-lv="Lv 2" data-mult="1.0" data-add="5">Lv 2</div>
+                                <div class="option-item" data-lv="Lv 3" data-mult="1.0" data-add="7">Lv 3</div>
+                                <div class="option-item" data-lv="Lv 4" data-mult="1.02" data-add="8">Lv 4</div>
+                                <div class="option-item" data-lv="Lv 5" data-mult="1.04" data-add="9">Lv 5</div>
+                            </div>
                         </div>
-                        <div class="skill-options" id="eyeMenu">
-                            <div class="option-item selected" data-lv="未選択" data-crit="0">未選択</div>
-                            <div class="option-item" data-lv="Lv 1" data-crit="4">Lv 1</div>
-                            <div class="option-item" data-lv="Lv 2" data-crit="8">Lv 2</div>
-                            <div class="option-item" data-lv="Lv 3" data-crit="12">Lv 3</div>
-                            <div class="option-item" data-lv="Lv 4" data-crit="16">Lv 4</div>
-                            <div class="option-item" data-lv="Lv 5" data-crit="20">Lv 5</div>
+                        <div class="skill-container">
+                            <div class="skill-selector is-empty" id="shuseiTrigger">
+                                <span class="skill-name">攻めの守勢</span>
+                                <span class="skill-level-preview">未選択</span>
+                                <span class="skill-dropdown-arrow">▼</span>
+                            </div>
+                            <div class="skill-options" id="shuseiMenu">
+                                <div class="option-item selected" data-lv="未選択" data-mult="1.0">未選択</div>
+                                <div class="option-item" data-lv="Lv 1" data-mult="1.05">Lv 1</div>
+                                <div class="option-item" data-lv="Lv 2" data-mult="1.10">Lv 2</div>
+                                <div class="option-item" data-lv="Lv 3" data-mult="1.15">Lv 3</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="skill-container">
-                        <div class="skill-selector is-empty" id="weakTrigger">
-                            <span class="skill-name">弱点特効</span>
-                            <span class="skill-level-preview">未選択</span>
-                            <span class="skill-dropdown-arrow">▼</span>
+                        <div class="skill-container">
+                            <div class="skill-selector is-empty" id="fullChargeTrigger">
+                                <span class="skill-name">フルチャージ</span>
+                                <span class="skill-level-preview">未選択</span>
+                                <span class="skill-dropdown-arrow">▼</span>
+                            </div>
+                            <div class="skill-options" id="fullChargeMenu">
+                                <div class="option-item selected" data-lv="未選択" data-add="0">未選択</div>
+                                <div class="option-item" data-lv="Lv 1" data-add="3">Lv 1</div>
+                                <div class="option-item" data-lv="Lv 2" data-add="6">Lv 2</div>
+                                <div class="option-item" data-lv="Lv 3" data-add="10">Lv 3</div>
+                                <div class="option-item" data-lv="Lv 4" data-add="15">Lv 4</div>
+                                <div class="option-item" data-lv="Lv 5" data-add="20">Lv 5</div>
+                            </div>
                         </div>
-                        <div class="skill-options" id="weakMenu">
-                            <div class="option-item selected" data-lv="未選択" data-crit="0">未選択</div>
-                            <div class="option-item" data-lv="Lv 1" data-crit="5">Lv 1</div>
-                            <div class="option-item" data-lv="Lv 2" data-crit="10">Lv 2</div>
-                            <div class="option-item" data-lv="Lv 3" data-crit="15">Lv 3</div>
-                            <div class="option-item" data-lv="Lv 4" data-crit="20">Lv 4</div>
-                            <div class="option-item" data-lv="Lv 5" data-crit="30">Lv 5</div>
-                        </div>
-                    </div>
-                    <div class="skill-container">
-                        <div class="skill-selector is-empty" id="konshinTrigger">
-                            <span class="skill-name">渾身</span>
-                            <span class="skill-level-preview">未選択</span>
-                            <span class="skill-dropdown-arrow">▼</span>
-                        </div>
-                        <div class="skill-options" id="konshinMenu">
-                            <div class="option-item selected" data-lv="未選択" data-crit="0">未選択</div>
-                            <div class="option-item" data-lv="Lv 1" data-crit="10">Lv 1</div>
-                            <div class="option-item" data-lv="Lv 2" data-crit="20">Lv 2</div>
-                            <div class="option-item" data-lv="Lv 3" data-crit="30">Lv 3</div>
-                        </div>
-                    </div>
-                    <div class="skill-container">
-                        <div class="skill-selector is-empty" id="cbTrigger">
-                            <span class="skill-name">超会心</span>
-                            <span class="skill-level-preview">未選択</span>
-                            <span class="skill-dropdown-arrow">▼</span>
-                        </div>
-                        <div class="skill-options" id="cbMenu">
-                            <div class="option-item selected" data-lv="未選択" data-mult="1.25">未選択</div>
-                            <div class="option-item" data-lv="Lv 1" data-mult="1.28">Lv 1</div>
-                            <div class="option-item" data-lv="Lv 2" data-mult="1.31">Lv 2</div>
-                            <div class="option-item" data-lv="Lv 3" data-mult="1.34">Lv 3</div>
-                            <div class="option-item" data-lv="Lv 4" data-mult="1.37">Lv 4</div>
-                            <div class="option-item" data-lv="Lv 5" data-mult="1.40">Lv 5</div>
+                        <div style="display: flex; align-items: center; gap: 8px; padding: 5px;">
+                            <input type="checkbox" id="checkNushi" checked style="width: auto; cursor: pointer;">
+                            <label for="checkNushi"
+                                style="margin-bottom: 0; cursor: pointer; color: var(--text-main); font-weight: bold;">
+                                ヌシの魂 (x1.05)
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-header">複合効果スキル</div>
-                <div class="skills-row-grid">
-                    <div class="skill-container">
-                        <div class="skill-selector is-empty" id="challengerTrigger">
-                            <span class="skill-name">挑戦者</span>
-                            <span class="skill-level-preview">未選択</span>
-                            <span class="skill-dropdown-arrow">▼</span>
+                <div class="card-header">
+                    <span>会心系スキル</span>
+                    <button class="toggle-btn" id="toggleCrtSkills">
+                        <span id="toggleCritIcon">▼</span>
+                    </button>
+                </div>
+                <div class="collapsible-body" id="critSkillsBody">
+                    <div class="skills-row-grid">
+                        <div class="skill-container">
+                            <div class="skill-selector is-empty" id="eyeTrigger">
+                                <span class="skill-name">見切り</span>
+                                <span class="skill-level-preview">未選択</span>
+                                <span class="skill-dropdown-arrow">▼</span>
+                            </div>
+                            <div class="skill-options" id="eyeMenu">
+                                <div class="option-item selected" data-lv="未選択" data-crit="0">未選択</div>
+                                <div class="option-item" data-lv="Lv 1" data-crit="4">Lv 1</div>
+                                <div class="option-item" data-lv="Lv 2" data-crit="8">Lv 2</div>
+                                <div class="option-item" data-lv="Lv 3" data-crit="12">Lv 3</div>
+                                <div class="option-item" data-lv="Lv 4" data-crit="16">Lv 4</div>
+                                <div class="option-item" data-lv="Lv 5" data-crit="20">Lv 5</div>
+                            </div>
                         </div>
-                        <div class="skill-options" id="challengerMenu">
-                            <div class="option-item selected" data-lv="未選択" data-atk="0" data-crit="0">未選択</div>
-                            <div class="option-item" data-lv="Lv 1" data-atk="4" data-crit="3">Lv 1</div>
-                            <div class="option-item" data-lv="Lv 2" data-atk="8" data-crit="5">Lv 2</div>
-                            <div class="option-item" data-lv="Lv 3" data-atk="12" data-crit="7">Lv 3</div>
-                            <div class="option-item" data-lv="Lv 4" data-atk="16" data-crit="10">Lv 4</div>
-                            <div class="option-item" data-lv="Lv 5" data-atk="20" data-crit="15">Lv 5</div>
+                        <div class="skill-container">
+                            <div class="skill-selector is-empty" id="weakTrigger">
+                                <span class="skill-name">弱点特効</span>
+                                <span class="skill-level-preview">未選択</span>
+                                <span class="skill-dropdown-arrow">▼</span>
+                            </div>
+                            <div class="skill-options" id="weakMenu">
+                                <div class="option-item selected" data-lv="未選択" data-crit="0">未選択</div>
+                                <div class="option-item" data-lv="Lv 1" data-crit="5">Lv 1</div>
+                                <div class="option-item" data-lv="Lv 2" data-crit="10">Lv 2</div>
+                                <div class="option-item" data-lv="Lv 3" data-crit="15">Lv 3</div>
+                                <div class="option-item" data-lv="Lv 4" data-crit="20">Lv 4</div>
+                                <div class="option-item" data-lv="Lv 5" data-crit="30">Lv 5</div>
+                            </div>
                         </div>
-                    </div>
-                    <!-- 連撃 -->
-                    <div class="skill-container">
-                        <div class="skill-selector is-empty" id="rengekiTrigger">
-                            <span class="skill-name">連撃</span>
-                            <span class="skill-level-preview">未選択</span>
-                            <span class="skill-dropdown-arrow">▼</span>
+                        <div class="skill-container">
+                            <div class="skill-selector is-empty" id="konshinTrigger">
+                                <span class="skill-name">渾身</span>
+                                <span class="skill-level-preview">未選択</span>
+                                <span class="skill-dropdown-arrow">▼</span>
+                            </div>
+                            <div class="skill-options" id="konshinMenu">
+                                <div class="option-item selected" data-lv="未選択" data-crit="0">未選択</div>
+                                <div class="option-item" data-lv="Lv 1" data-crit="10">Lv 1</div>
+                                <div class="option-item" data-lv="Lv 2" data-crit="20">Lv 2</div>
+                                <div class="option-item" data-lv="Lv 3" data-crit="30">Lv 3</div>
+                            </div>
                         </div>
-                        <div class="skill-options" id="rengekiMenu">
-                            <div class="option-item selected" data-lv="未選択" data-atk="0" data-elem="0">未選択</div>
-                            <div class="option-item" data-lv="Lv 1" data-atk="8" data-elem="60">Lv 1</div>
-                            <div class="option-item" data-lv="Lv 2" data-atk="10" data-elem="80">Lv 2</div>
-                            <div class="option-item" data-lv="Lv 3" data-atk="12" data-elem="100">Lv 3</div>
-                            <div class="option-item" data-lv="Lv 4" data-atk="15" data-elem="120">Lv 4</div>
-                            <div class="option-item" data-lv="Lv 5" data-atk="18" data-elem="140">Lv 5</div>
+                        <div class="skill-container">
+                            <div class="skill-selector is-empty" id="cbTrigger">
+                                <span class="skill-name">超会心</span>
+                                <span class="skill-level-preview">未選択</span>
+                                <span class="skill-dropdown-arrow">▼</span>
+                            </div>
+                            <div class="skill-options" id="cbMenu">
+                                <div class="option-item selected" data-lv="未選択" data-mult="1.25">未選択</div>
+                                <div class="option-item" data-lv="Lv 1" data-mult="1.28">Lv 1</div>
+                                <div class="option-item" data-lv="Lv 2" data-mult="1.31">Lv 2</div>
+                                <div class="option-item" data-lv="Lv 3" data-mult="1.34">Lv 3</div>
+                                <div class="option-item" data-lv="Lv 4" data-mult="1.37">Lv 4</div>
+                                <div class="option-item" data-lv="Lv 5" data-mult="1.40">Lv 5</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-header">消費アイテム・食事効果</div>
-                <div class="skills-row-grid">
-                    <div class="skill-container">
-                        <div class="skill-selector" id="buffTrigger">
-                            <span class="skill-name">アイテム・食事</span>
-                            <span class="skill-level-preview">食事のお誘い</span>
-                            <span class="skill-dropdown-arrow">▼</span>
+                <div class="card-header">
+                    <span>複合効果スキル</span>
+                    <button class="toggle-btn" id="toggleEtcSkills">
+                        <span id="toggleEtcIcon">▼</span>
+                    </button>
+                </div>
+                <div class="collapsible-body" id="etcSkillsBody">
+                    <div class="skills-row-grid">
+                        <div class="skill-container">
+                            <div class="skill-selector is-empty" id="challengerTrigger">
+                                <span class="skill-name">挑戦者</span>
+                                <span class="skill-level-preview">未選択</span>
+                                <span class="skill-dropdown-arrow">▼</span>
+                            </div>
+                            <div class="skill-options" id="challengerMenu">
+                                <div class="option-item selected" data-lv="未選択" data-atk="0" data-crit="0">未選択</div>
+                                <div class="option-item" data-lv="Lv 1" data-atk="4" data-crit="3">Lv 1</div>
+                                <div class="option-item" data-lv="Lv 2" data-atk="8" data-crit="5">Lv 2</div>
+                                <div class="option-item" data-lv="Lv 3" data-atk="12" data-crit="7">Lv 3</div>
+                                <div class="option-item" data-lv="Lv 4" data-atk="16" data-crit="10">Lv 4</div>
+                                <div class="option-item" data-lv="Lv 5" data-atk="20" data-crit="15">Lv 5</div>
+                            </div>
                         </div>
-                        <div class="skill-options" id="buffMenu">
-                            <div class="option-item" data-lv="未選択" data-add="0">未選択</div>
-                            <div class="option-item" data-lv="焚き火料理" data-add="2">焚き火料理 (+2)</div>
-                            <div class="option-item selected" data-lv="食事のお誘い" data-add="5">食事のお誘い (+5)</div>
-                        </div>
-                    </div>
-                    <div class="skill-container">
-                        <div class="skill-selector" id="drugTrigger">
-                            <span class="skill-name">鬼人薬</span>
-                            <span class="skill-level-preview">鬼人薬G</span>
-                            <span class="skill-dropdown-arrow">▼</span>
-                        </div>
-                        <div class="skill-options" id="drugMenu">
-                            <div class="option-item" data-lv="未選択" data-add="0">未選択</div>
-                            <div class="option-item" data-lv="鬼人薬" data-add="5">鬼人薬 (+5)</div>
-                            <div class="option-item selected" data-lv="鬼人薬G" data-add="7">鬼人薬G (+7)</div>
-                        </div>
-                    </div>
-                    <div class="skill-container">
-                        <div class="skill-selector" id="seedTrigger">
-                            <span class="skill-name">種・丸薬</span>
-                            <span class="skill-level-preview">怪力の種</span>
-                            <span class="skill-dropdown-arrow">▼</span>
-                        </div>
-                        <div class="skill-options" id="seedMenu">
-                            <div class="option-item" data-lv="未選択" data-add="0">未選択</div>
-                            <div class="option-item selected" data-lv="怪力の種" data-add="10">怪力の種 (+10)</div>
-                            <div class="option-item" data-lv="鬼人の丸薬" data-add="25">鬼人の丸薬 (+25)</div>
-                        </div>
-                    </div>
-                    <div class="skill-container">
-                        <div class="skill-selector" id="powderTrigger">
-                            <span class="skill-name">鬼人の粉塵</span>
-                            <span class="skill-level-preview">鬼人の粉塵</span>
-                            <span class="skill-dropdown-arrow">▼</span>
-                        </div>
-                        <div class="skill-options" id="powderMenu">
-                            <div class="option-item" data-lv="未選択" data-add="0">未選択</div>
-                            <div class="option-item selected" data-lv="鬼人の粉塵" data-add="10">鬼人の粉塵 (+10)</div>
+                        <div class="skill-container">
+                            <div class="skill-selector is-empty" id="rengekiTrigger">
+                                <span class="skill-name">連撃</span>
+                                <span class="skill-level-preview">未選択</span>
+                                <span class="skill-dropdown-arrow">▼</span>
+                            </div>
+                            <div class="skill-options" id="rengekiMenu">
+                                <div class="option-item selected" data-lv="未選択" data-atk="0" data-elem="0">未選択</div>
+                                <div class="option-item" data-lv="Lv 1" data-atk="8" data-elem="60">Lv 1</div>
+                                <div class="option-item" data-lv="Lv 2" data-atk="10" data-elem="80">Lv 2</div>
+                                <div class="option-item" data-lv="Lv 3" data-atk="12" data-elem="100">Lv 3</div>
+                                <div class="option-item" data-lv="Lv 4" data-atk="15" data-elem="120">Lv 4</div>
+                                <div class="option-item" data-lv="Lv 5" data-atk="18" data-elem="140">Lv 5</div>
+                            </div>
                         </div>
                     </div>
-                    <!-- 力の護符チェックボックス (追加) -->
-                    <div style="display: flex; align-items: center; gap: 8px; padding: 5px;">
-                        <input type="checkbox" id="checkCharm" checked style="width: auto; cursor: pointer;">
-                        <label for="checkCharm"
-                            style="margin-bottom: 0; cursor: pointer; color: var(--text-main); font-weight: bold;">
-                            力の護符 (+6)
-                        </label>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>消費アイテム・食事効果</span>
+                    <button class="toggle-btn" id="toggleBuffs">
+                        <span id="toggleBuffIcon">▼</span>
+                    </button>
+                </div>
+                <div class="collapsible-body" id="buffBody">
+                    <div class="skills-row-grid">
+                        <div class="skill-container">
+                            <div class="skill-selector" id="buffTrigger">
+                                <span class="skill-name">アイテム・食事</span>
+                                <span class="skill-level-preview">食事のお誘い</span>
+                                <span class="skill-dropdown-arrow">▼</span>
+                            </div>
+                            <div class="skill-options" id="buffMenu">
+                                <div class="option-item" data-lv="未選択" data-add="0">未選択</div>
+                                <div class="option-item" data-lv="焚き火料理" data-add="2">焚き火料理 (+2)</div>
+                                <div class="option-item selected" data-lv="食事のお誘い" data-add="5">食事のお誘い (+5)</div>
+                            </div>
+                        </div>
+                        <div class="skill-container">
+                            <div class="skill-selector" id="drugTrigger">
+                                <span class="skill-name">鬼人薬</span>
+                                <span class="skill-level-preview">鬼人薬G</span>
+                                <span class="skill-dropdown-arrow">▼</span>
+                            </div>
+                            <div class="skill-options" id="drugMenu">
+                                <div class="option-item" data-lv="未選択" data-add="0">未選択</div>
+                                <div class="option-item" data-lv="鬼人薬" data-add="5">鬼人薬 (+5)</div>
+                                <div class="option-item selected" data-lv="鬼人薬G" data-add="7">鬼人薬G (+7)</div>
+                            </div>
+                        </div>
+                        <div class="skill-container">
+                            <div class="skill-selector" id="seedTrigger">
+                                <span class="skill-name">種・丸薬</span>
+                                <span class="skill-level-preview">怪力の種</span>
+                                <span class="skill-dropdown-arrow">▼</span>
+                            </div>
+                            <div class="skill-options" id="seedMenu">
+                                <div class="option-item" data-lv="未選択" data-add="0">未選択</div>
+                                <div class="option-item selected" data-lv="怪力の種" data-add="10">怪力の種 (+10)</div>
+                                <div class="option-item" data-lv="鬼人の丸薬" data-add="25">鬼人の丸薬 (+25)</div>
+                            </div>
+                        </div>
+                        <div class="skill-container">
+                            <div class="skill-selector" id="powderTrigger">
+                                <span class="skill-name">鬼人の粉塵</span>
+                                <span class="skill-level-preview">鬼人の粉塵</span>
+                                <span class="skill-dropdown-arrow">▼</span>
+                            </div>
+                            <div class="skill-options" id="powderMenu">
+                                <div class="option-item" data-lv="未選択" data-add="0">未選択</div>
+                                <div class="option-item selected" data-lv="鬼人の粉塵" data-add="10">鬼人の粉塵 (+10)</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px; padding: 5px;">
+                            <input type="checkbox" id="checkCharm" checked style="width: auto; cursor: pointer;">
+                            <label for="checkCharm"
+                                style="margin-bottom: 0; cursor: pointer; color: var(--text-main); font-weight: bold;">
+                                力の護符 (+6)
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -585,7 +612,7 @@
                         <span id="toggleMotionIcon">▼</span>
                     </button>
                 </div>
-                <div class="motion-card-body" id="motionCardBody">
+                <div class="collapsible-body" id="motionCardBody">
                     <div class="table-wrapper">
                         <table>
                             <thead>
@@ -644,12 +671,12 @@
         let critDamageMult = 1.25;
         let shuseiMult = 1.0;
         let fullChargeAdd = 0;
-        let rengekiAtkAdd = 0; // 連撃物理
-        let rengekiElemAdd = 0; // 連撃属性
-        let buffAdd = 5; // 初期値：食事のお誘い (+5)
-        let drugAdd = 7;   // 鬼人薬G (デフォルト)
-        let seedAdd = 10;  // 怪力の種 (デフォルト)
-        let powderAdd = 10; // デフォルトで鬼人の粉塵 (+10) を設定
+        let rengekiAtkAdd = 0;
+        let rengekiElemAdd = 0;
+        let buffAdd = 5;
+        let drugAdd = 7;
+        let seedAdd = 10;
+        let powderAdd = 10;
 
         window.stepHz = function (id, delta) {
             const el = document.getElementById(id);
@@ -735,6 +762,13 @@
             });
         }
 
+        function setupHiddenButton(buttonId, bodyId, iconId) {
+            document.getElementById(buttonId).addEventListener('click', () => {
+                const isHidden = document.getElementById(bodyId).classList.toggle('hidden');
+                document.getElementById(iconId).textContent = isHidden ? '▲' : '▼';
+            });
+        }
+
         setupDropdown('atkSkillTrigger', 'atkSkillMenu', (item) => {
             skillAtkMult = parseFloat(item.getAttribute('data-mult'));
             skillAtkAdd = parseInt(item.getAttribute('data-add'));
@@ -783,10 +817,15 @@
             document.querySelectorAll('.skill-options').forEach(m => m.classList.remove('show'));
         });
 
-        document.getElementById('toggleMotionList').addEventListener('click', () => {
-            const isHidden = motionCardBody.classList.toggle('hidden');
-            document.getElementById('toggleMotionIcon').textContent = isHidden ? '▶' : '▼';
-        });
+        setupHiddenButton('toggleMotionList', 'motionCardBody', 'toggleMotionIcon');
+
+        setupHiddenButton('toggleAtkSkills', 'atkSkillsBody', 'toggleAtkIcon');
+
+        setupHiddenButton('toggleCrtSkills', 'critSkillsBody', 'toggleCritIcon');
+
+        setupHiddenButton('toggleEtcSkills', 'etcSkillsBody', 'toggleEtcIcon');
+
+        setupHiddenButton('toggleBuffs', 'buffBody', 'toggleBuffIcon');
 
         [inputAtk, inputElem, inputCrit, inputSharp, inputPhysHz, inputElemHz].forEach(el => {
             el.addEventListener('input', calculate);

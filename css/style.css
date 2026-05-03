@@ -256,9 +256,41 @@ td {
     font-weight: bold;
 }
 
-.val-sub {
+/* モーション名のコンテナを相対位置に */
+.motion-container {
+    position: relative;
+    cursor: help;
+}
+
+/* ツールチップの初期状態（非表示） */
+.motion-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    /* 名前の少し上に表示 */
+    background-color: #333;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
     font-size: 11px;
-    color: #aaa;
+    white-space: nowrap;
+    z-index: 10;
+    transition: opacity 0.2s;
+    pointer-events: none;
+    /* マウスイベントを邪魔しない */
+}
+
+/* ホバー時に表示 */
+.motion-container:hover .motion-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* 元の val-sub クラスは不要であれば削除、または上記 tooltip に統合 */
+.val-sub {
+    display: none;
 }
 
 @media (max-width: 768px) {

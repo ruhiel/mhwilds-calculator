@@ -50,10 +50,16 @@ window.stepHz = function (id, delta) {
     calculate();
 };
 
+// initTable関数のみ差し替え
 function initTable() {
     tableBody.innerHTML = motionData.map(m => `
                 <tr data-mv="${m[1]}" data-elev="${m[2]}">
-                    <td class="motion-name">${m[0]}<br><span class="val-sub">MV:${m[1]} / 属性:${m[2]}</span></td>
+                    <td class="motion-name">
+                        <div class="motion-container">
+                            ${m[0]}
+                            <span class="motion-tooltip">モーション値:${m[1]} / 属性補正:${m[2]}</span>
+                        </div>
+                    </td>
                     <td class="res-normal">0</td>
                     <td class="res-critical">0</td>
                     <td class="res-expected val-expected">0</td>

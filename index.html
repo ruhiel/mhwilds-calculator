@@ -811,8 +811,7 @@
         setupDropdown('powderTrigger', 'powderMenu', (item) => {
             powderAdd = parseInt(item.getAttribute('data-add'));
         });
-        checkCharm.addEventListener('change', calculate);
-        checkNushi.addEventListener('change', calculate);
+
         window.addEventListener('click', () => {
             document.querySelectorAll('.skill-options').forEach(m => m.classList.remove('show'));
         });
@@ -826,6 +825,10 @@
         setupHiddenButton('toggleEtcSkills', 'etcSkillsBody', 'toggleEtcIcon');
 
         setupHiddenButton('toggleBuffs', 'buffBody', 'toggleBuffIcon');
+
+        [checkCharm, checkNushi].forEach(el => {
+            el.addEventListener('change', calculate);
+        });
 
         [inputAtk, inputElem, inputCrit, inputSharp, inputPhysHz, inputElemHz].forEach(el => {
             el.addEventListener('input', calculate);

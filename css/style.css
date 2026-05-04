@@ -160,6 +160,8 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     max-height: none;
     overflow: visible;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 .skill-options.show {
@@ -218,6 +220,7 @@ select {
     overflow-y: auto;
     border: 1px solid var(--border-color);
     border-radius: 4px;
+    scrollbar-gutter: stable;
 }
 
 table {
@@ -244,6 +247,11 @@ th {
 td {
     padding: 10px 8px;
     border-bottom: 1px solid #eee;
+}
+
+th:last-child,
+td:last-child {
+    padding-right: 16px;
 }
 
 .motion-name {

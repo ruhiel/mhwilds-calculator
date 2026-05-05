@@ -43,6 +43,8 @@ let buffAdd = 5;
 let drugAdd = 7;
 let seedAdd = 10;
 let powderAdd = 10;
+let sokubakuAtkAdd = 0;
+let rengekiKyoukaAdd = 0;
 
 window.stepHz = function (id, delta) {
     const el = document.getElementById(id);
@@ -76,7 +78,7 @@ function calculate() {
     const charmAdd = checkCharm.checked ? 6 : 0;
     const nushiMult = checkNushi.checked ? 1.05 : 1.0;
 
-    const totalAtk = Math.floor((baseAtk * skillAtkMult * shuseiMult * nushiMult) + skillAtkAdd + challengerAtkAdd + fullChargeAdd + rengekiAtkAdd + buffAdd + charmAdd + drugAdd + seedAdd + powderAdd);
+    const totalAtk = Math.floor((baseAtk * skillAtkMult * shuseiMult * nushiMult) + skillAtkAdd + challengerAtkAdd + fullChargeAdd + rengekiAtkAdd + buffAdd + charmAdd + drugAdd + seedAdd + powderAdd + sokubakuAtkAdd + rengekiKyoukaAdd);
     const totalElem = (baseElem + rengekiElemAdd);
     const effElemDisplay = totalElem * 0.1 * sharpElem;
 
@@ -183,7 +185,12 @@ setupDropdown('seedTrigger', 'seedMenu', (item) => {
 setupDropdown('powderTrigger', 'powderMenu', (item) => {
     powderAdd = parseInt(item.getAttribute('data-add'));
 });
-
+setupDropdown('sokubakuTrigger', 'sokubakuMenu', (item) => {
+    sokubakuAtkAdd = parseInt(item.getAttribute('data-add'));
+});
+setupDropdown('rengekiKyoukaTrigger', 'rengekiKyoukaMenu', (item) => {
+    rengekiKyoukaAdd = parseInt(item.getAttribute('data-add'));
+});
 window.addEventListener('click', () => {
     document.querySelectorAll('.skill-options').forEach(m => m.classList.remove('show'));
 });

@@ -314,3 +314,32 @@ td:last-child {
 input[type=checkbox] {
     transform: scale(1.5);
 }
+
+/* 復元ボーナス用のスタイル調整 */
+.bonus-title {
+    font-size: 11px;
+    color: var(--text-sub);
+    margin-top: 15px;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.bonus-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 横に3つ並べる（5枠なので2行に綺麗に収まります） */
+    gap: 8px;
+}
+
+/* 武器設定カード内のドロップダウンメニューの最大高さを確保 */
+.bonus-menu {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* スマホ表示の時は1列にする */
+@media (max-width: 768px) {
+    .bonus-grid {
+        grid-template-columns: 1fr;
+    }
+}

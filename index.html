@@ -15,7 +15,7 @@
             <div class="card">
                 <div class="card-header">武器設定</div>
                 <div class="input-group">
-                    <div><label>基礎攻撃力</label><input type="number" id="inputAtk" value="200" min="0"></div>
+                    <div><label>基礎攻撃力</label><input type="number" id="inputAtk" value="205" min="0"></div>
                     <div><label>属性値</label><input type="number" id="inputElem" value="0" min="0"></div>
                 </div>
                 <div class="input-group-row2">
@@ -29,6 +29,174 @@
                             <option value="0.75" data-elem="0.500">オレンジ</option>
                             <option value="0.50" data-elem="0.250">赤</option>
                         </select>
+                    </div>
+                </div>
+                <div class="bonus-title">復元ボーナス (最大5つ)</div>
+                <div class="bonus-grid">
+                    <div class="skill-container">
+                        <div class="skill-selector is-empty" id="bonus1Trigger">
+                            <span class="skill-name">スロット 1</span>
+                            <span class="skill-level-preview">未選択</span>
+                            <span class="skill-dropdown-arrow">▼</span>
+                        </div>
+                        <div class="skill-options bonus-menu" id="bonus1Menu">
+                            <div class="option-item selected" data-lv="未選択" data-atk="0" data-crit="0" data-elem="0">未選択
+                            </div>
+                            <div class="option-item" data-lv="基礎攻撃力強化Ⅰ" data-atk="5" data-crit="0" data-elem="0">
+                                基礎攻撃力強化Ⅰ (+5)</div>
+                            <div class="option-item" data-lv="基礎攻撃力強化Ⅱ" data-atk="6" data-crit="0" data-elem="0">
+                                基礎攻撃力強化Ⅱ (+6)</div>
+                            <div class="option-item" data-lv="基礎攻撃力強化Ⅲ" data-atk="9" data-crit="0" data-elem="0">
+                                基礎攻撃力強化Ⅲ (+9)</div>
+                            <div class="option-item" data-lv="基礎攻撃力強化ＥＸ" data-atk="12" data-crit="0" data-elem="0">
+                                基礎攻撃力強化ＥＸ (+12)</div>
+                            <div class="option-item" data-lv="会心率強化Ⅰ" data-atk="0" data-crit="5" data-elem="0">会心率強化Ⅰ
+                                (+5%)</div>
+                            <div class="option-item" data-lv="会心率強化Ⅱ" data-atk="0" data-crit="6" data-elem="0">会心率強化Ⅱ
+                                (+6%)</div>
+                            <div class="option-item" data-lv="会心率強化Ⅲ" data-atk="0" data-crit="8" data-elem="0">会心率強化Ⅲ
+                                (+8%)</div>
+                            <div class="option-item" data-lv="会心率強化ＥＸ" data-atk="0" data-crit="10" data-elem="0">会心率強化ＥＸ
+                                (+10%)</div>
+                            <div class="option-item" data-lv="属性強化Ⅰ" data-atk="0" data-crit="0" data-elem="30">属性強化Ⅰ
+                                (+30)</div>
+                            <div class="option-item" data-lv="属性強化Ⅱ" data-atk="0" data-crit="0" data-elem="50">属性強化Ⅱ
+                                (+50)</div>
+                            <div class="option-item" data-lv="属性強化ＥＸ" data-atk="0" data-crit="0" data-elem="80">属性強化ＥＸ
+                                (+80)</div>
+                        </div>
+                    </div>
+                    <div class="skill-container">
+                        <div class="skill-selector is-empty" id="bonus2Trigger">
+                            <span class="skill-name">スロット 2</span>
+                            <span class="skill-level-preview">未選択</span>
+                            <span class="skill-dropdown-arrow">▼</span>
+                        </div>
+                        <div class="skill-options bonus-menu" id="bonus2Menu">
+                            <div class="option-item selected" data-lv="未選択" data-atk="0" data-crit="0" data-elem="0">未選択
+                            </div>
+                            <div class="option-item" data-lv="基礎攻撃力強化Ⅰ" data-atk="5" data-crit="0" data-elem="0">
+                                基礎攻撃力強化Ⅰ (+5)</div>
+                            <div class="option-item" data-lv="基礎攻撃力強化Ⅱ" data-atk="6" data-crit="0" data-elem="0">
+                                基礎攻撃力強化Ⅱ (+6)</div>
+                            <div class="option-item" data-lv="基礎攻撃力強化Ⅲ" data-atk="9" data-crit="0" data-elem="0">
+                                基礎攻撃力強化Ⅲ (+9)</div>
+                            <div class="option-item" data-lv="基礎攻撃力強化ＥＸ" data-atk="12" data-crit="0" data-elem="0">
+                                基礎攻撃力強化ＥＸ (+12)</div>
+                            <div class="option-item" data-lv="会心率強化Ⅰ" data-atk="0" data-crit="5" data-elem="0">会心率強化Ⅰ
+                                (+5%)</div>
+                            <div class="option-item" data-lv="会心率強化Ⅱ" data-atk="0" data-crit="6" data-elem="0">会心率強化Ⅱ
+                                (+6%)</div>
+                            <div class="option-item" data-lv="会心率強化Ⅲ" data-atk="0" data-crit="8" data-elem="0">会心率強化Ⅲ
+                                (+8%)</div>
+                            <div class="option-item" data-lv="会心率強化ＥＸ" data-atk="0" data-crit="10" data-elem="0">会心率強化ＥＸ
+                                (+10%)</div>
+                            <div class="option-item" data-lv="属性強化Ⅰ" data-atk="0" data-crit="0" data-elem="30">属性強化Ⅰ
+                                (+30)</div>
+                            <div class="option-item" data-lv="属性強化Ⅱ" data-atk="0" data-crit="0" data-elem="50">属性強化Ⅱ
+                                (+50)</div>
+                            <div class="option-item" data-lv="属性強化ＥＸ" data-atk="0" data-crit="0" data-elem="80">属性強化ＥＸ
+                                (+80)</div>
+                        </div>
+                    </div>
+                    <div class="skill-container">
+                        <div class="skill-selector is-empty" id="bonus3Trigger">
+                            <span class="skill-name">スロット 3</span>
+                            <span class="skill-level-preview">未選択</span>
+                            <span class="skill-dropdown-arrow">▼</span>
+                        </div>
+                        <div class="skill-options bonus-menu" id="bonus3Menu">
+                            <div class="option-item selected" data-lv="未選択" data-atk="0" data-crit="0" data-elem="0">未選択
+                            </div>
+                            <div class="option-item" data-lv="基礎攻撃力強化Ⅰ" data-atk="5" data-crit="0" data-elem="0">
+                                基礎攻撃力強化Ⅰ (+5)</div>
+                            <div class="option-item" data-lv="基礎攻撃力強化Ⅱ" data-atk="6" data-crit="0" data-elem="0">
+                                基礎攻撃力強化Ⅱ (+6)</div>
+                            <div class="option-item" data-lv="基礎攻撃力強化Ⅲ" data-atk="9" data-crit="0" data-elem="0">
+                                基礎攻撃力強化Ⅲ (+9)</div>
+                            <div class="option-item" data-lv="基礎攻撃力強化ＥＸ" data-atk="12" data-crit="0" data-elem="0">
+                                基礎攻撃力強化ＥＸ (+12)</div>
+                            <div class="option-item" data-lv="会心率強化Ⅰ" data-atk="0" data-crit="5" data-elem="0">会心率強化Ⅰ
+                                (+5%)</div>
+                            <div class="option-item" data-lv="会心率強化Ⅱ" data-atk="0" data-crit="6" data-elem="0">会心率強化Ⅱ
+                                (+6%)</div>
+                            <div class="option-item" data-lv="会心率強化Ⅲ" data-atk="0" data-crit="8" data-elem="0">会心率強化Ⅲ
+                                (+8%)</div>
+                            <div class="option-item" data-lv="会心率強化ＥＸ" data-atk="0" data-crit="10" data-elem="0">会心率強化ＥＸ
+                                (+10%)</div>
+                            <div class="option-item" data-lv="属性強化Ⅰ" data-atk="0" data-crit="0" data-elem="30">属性強化Ⅰ
+                                (+30)</div>
+                            <div class="option-item" data-lv="属性強化Ⅱ" data-atk="0" data-crit="0" data-elem="50">属性強化Ⅱ
+                                (+50)</div>
+                            <div class="option-item" data-lv="属性強化ＥＸ" data-atk="0" data-crit="0" data-elem="80">属性強化ＥＸ
+                                (+80)</div>
+                        </div>
+                    </div>
+                    <div class="skill-container">
+                        <div class="skill-selector is-empty" id="bonus4Trigger">
+                            <span class="skill-name">スロット 4</span>
+                            <span class="skill-level-preview">未選択</span>
+                            <span class="skill-dropdown-arrow">▼</span>
+                        </div>
+                        <div class="skill-options bonus-menu" id="bonus4Menu">
+                            <div class="option-item selected" data-lv="未選択" data-atk="0" data-crit="0" data-elem="0">未選択
+                            </div>
+                            <div class="option-item" data-lv="基礎攻撃力強化Ⅰ" data-atk="5" data-crit="0" data-elem="0">
+                                基礎攻撃力強化Ⅰ (+5)</div>
+                            <div class="option-item" data-lv="基礎攻撃力強化Ⅱ" data-atk="6" data-crit="0" data-elem="0">
+                                基礎攻撃力強化Ⅱ (+6)</div>
+                            <div class="option-item" data-lv="基礎攻撃力強化Ⅲ" data-atk="9" data-crit="0" data-elem="0">
+                                基礎攻撃力強化Ⅲ (+9)</div>
+                            <div class="option-item" data-lv="基礎攻撃力強化ＥＸ" data-atk="12" data-crit="0" data-elem="0">
+                                基礎攻撃力強化ＥＸ (+12)</div>
+                            <div class="option-item" data-lv="会心率強化Ⅰ" data-atk="0" data-crit="5" data-elem="0">会心率強化Ⅰ
+                                (+5%)</div>
+                            <div class="option-item" data-lv="会心率強化Ⅱ" data-atk="0" data-crit="6" data-elem="0">会心率強化Ⅱ
+                                (+6%)</div>
+                            <div class="option-item" data-lv="会心率強化Ⅲ" data-atk="0" data-crit="8" data-elem="0">会心率強化Ⅲ
+                                (+8%)</div>
+                            <div class="option-item" data-lv="会心率強化ＥＸ" data-atk="0" data-crit="10" data-elem="0">会心率強化ＥＸ
+                                (+10%)</div>
+                            <div class="option-item" data-lv="属性強化Ⅰ" data-atk="0" data-crit="0" data-elem="30">属性強化Ⅰ
+                                (+30)</div>
+                            <div class="option-item" data-lv="属性強化Ⅱ" data-atk="0" data-crit="0" data-elem="50">属性強化Ⅱ
+                                (+50)</div>
+                            <div class="option-item" data-lv="属性強化ＥＸ" data-atk="0" data-crit="0" data-elem="80">属性強化ＥＸ
+                                (+80)</div>
+                        </div>
+                    </div>
+                    <div class="skill-container">
+                        <div class="skill-selector is-empty" id="bonus5Trigger">
+                            <span class="skill-name">スロット 5</span>
+                            <span class="skill-level-preview">未選択</span>
+                            <span class="skill-dropdown-arrow">▼</span>
+                        </div>
+                        <div class="skill-options bonus-menu" id="bonus5Menu">
+                            <div class="option-item selected" data-lv="未選択" data-atk="0" data-crit="0" data-elem="0">未選択
+                            </div>
+                            <div class="option-item" data-lv="基礎攻撃力強化Ⅰ" data-atk="5" data-crit="0" data-elem="0">
+                                基礎攻撃力強化Ⅰ (+5)</div>
+                            <div class="option-item" data-lv="基礎攻撃力強化Ⅱ" data-atk="6" data-crit="0" data-elem="0">
+                                基礎攻撃力強化Ⅱ (+6)</div>
+                            <div class="option-item" data-lv="基礎攻撃力強化Ⅲ" data-atk="9" data-crit="0" data-elem="0">
+                                基礎攻撃力強化Ⅲ (+9)</div>
+                            <div class="option-item" data-lv="基礎攻撃力強化ＥＸ" data-atk="12" data-crit="0" data-elem="0">
+                                基礎攻撃力強化ＥＸ (+12)</div>
+                            <div class="option-item" data-lv="会心率強化Ⅰ" data-atk="0" data-crit="5" data-elem="0">会心率強化Ⅰ
+                                (+5%)</div>
+                            <div class="option-item" data-lv="会心率強化Ⅱ" data-atk="0" data-crit="6" data-elem="0">会心率強化Ⅱ
+                                (+6%)</div>
+                            <div class="option-item" data-lv="会心率強化Ⅲ" data-atk="0" data-crit="8" data-elem="0">会心率強化Ⅲ
+                                (+8%)</div>
+                            <div class="option-item" data-lv="会心率強化ＥＸ" data-atk="0" data-crit="10" data-elem="0">会心率強化ＥＸ
+                                (+10%)</div>
+                            <div class="option-item" data-lv="属性強化Ⅰ" data-atk="0" data-crit="0" data-elem="30">属性強化Ⅰ
+                                (+30)</div>
+                            <div class="option-item" data-lv="属性強化Ⅱ" data-atk="0" data-crit="0" data-elem="50">属性強化Ⅱ
+                                (+50)</div>
+                            <div class="option-item" data-lv="属性強化ＥＸ" data-atk="0" data-crit="0" data-elem="80">属性強化ＥＸ
+                                (+80)</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -301,8 +469,8 @@
                             </div>
                             <div class="skill-options" id="seedMenu">
                                 <div class="option-item" data-lv="未選択" data-add="0">未選択</div>
-                                <div class="option-item selected" data-lv="怪力の種" data-add="10">怪力の種 (+10)</div>
-                                <div class="option-item" data-lv="鬼人の丸薬" data-add="25">鬼人の丸薬 (+25)</div>
+                                <div class="option-item" data-lv="怪力の種" data-add="10">怪力の種 (+10)</div>
+                                <div class="option-item selected" data-lv="鬼人の丸薬" data-add="25">鬼人の丸薬 (+25)</div>
                             </div>
                         </div>
                         <div class="skill-container">
@@ -312,8 +480,8 @@
                                 <span class="skill-dropdown-arrow">▼</span>
                             </div>
                             <div class="skill-options" id="powderMenu">
-                                <div class="option-item" data-lv="未選択" data-add="0">未選択</div>
-                                <div class="option-item selected" data-lv="鬼人の粉塵" data-add="10">鬼人の粉塵 (+10)</div>
+                                <div class="option-item selected" data-lv="未選択" data-add="0">未選択</div>
+                                <div class="option-item" data-lv="鬼人の粉塵" data-add="10">鬼人の粉塵 (+10)</div>
                             </div>
                         </div>
                         <div style="display: flex; align-items: center; gap: 8px; padding: 5px;">

@@ -45,6 +45,14 @@ let seedAdd = 10;
 let powderAdd = 10;
 let sokubakuAtkAdd = 0;
 let rengekiKyoukaAdd = 0;
+// 復元ボーナスの各枠の値を保持するオブジェクト配列 (初期値はすべて0)
+let restorationBonuses = [
+    { atk: 0, crit: 0, elem: 0 },
+    { atk: 0, crit: 0, elem: 0 },
+    { atk: 0, crit: 0, elem: 0 },
+    { atk: 0, crit: 0, elem: 0 },
+    { atk: 0, crit: 0, elem: 0 }
+];
 
 window.stepHz = function (id, delta) {
     const el = document.getElementById(id);
@@ -79,14 +87,23 @@ function initTable() {
 }
 
 function calculate() {
-    const baseAtk = parseFloat(inputAtk.value) || 0;
-    const baseElem = parseFloat(inputElem.value) || 0;
-    const baseCrit = parseFloat(inputCrit.value) || 0;
+    let baseAtk = parseFloat(inputAtk.value) || 0;
+    let baseElem = parseFloat(inputElem.value) || 0;
+    let baseCrit = parseFloat(inputCrit.value) || 0;
     const sharpPhys = parseFloat(inputSharp.value);
     const sharpElem = parseFloat(inputSharp.options[inputSharp.selectedIndex].getAttribute('data-elem'));
     const charmAdd = checkCharm.checked ? 6 : 0;
     const nushiMult = checkNushi.checked ? 1.05 : 1.0;
 
+    // ★ 復元ボーナスの合計値を算出
+    const restoreAtkAdd = restorationBonuses.reduce((sum, b) => sum + b.atk, 0);
+    const restoreCritAdd = restorationBonuses.reduce((sum, b) => sum + b.crit, 0);
+    const restoreElemAdd = restorationBonuses.reduce((sum, b) => sum + b.elem, 0);
+
+    baseAtk = baseAtk + restoreAtkAdd;
+    baseCrit = baseCrit + restoreCritAdd;
+    baseElem = baseElem + restoreElemAdd;
+    
     const totalAtk = Math.floor((baseAtk * skillAtkMult * shuseiMult * nushiMult) + skillAtkAdd + challengerAtkAdd + fullChargeAdd + rengekiAtkAdd + buffAdd + charmAdd + drugAdd + seedAdd + powderAdd + sokubakuAtkAdd + rengekiKyoukaAdd);
     const totalElem = (baseElem + rengekiElemAdd);
     const effElemDisplay = totalElem * 0.1 * sharpElem;
@@ -221,6 +238,15 @@ setupHiddenButton('toggleBuffs', 'buffBody', 'toggleBuffIcon');
 [inputAtk, inputElem, inputCrit, inputSharp, inputPhysHz, inputElemHz].forEach(el => {
     el.addEventListener('input', calculate);
 });
-
+// 復元ボーナス5枠のドロップダウンを一括設定
+for (let i = 1; i <= 5; i++) {
+    setupDropdown(`bonus${i}Trigger`, `bonus${i}Menu`, (item) => {
+        restorationBonuses[i - 1] = {
+            atk: parseInt(item.getAttribute('data-atk')) || 0,
+            crit: parseInt(item.getAttribute('data-crit')) || 0,
+            elem: parseInt(item.getAttribute('data-elem')) || 0
+        };
+    });
+}
 initTable();
 calculate();

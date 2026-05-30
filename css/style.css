@@ -343,3 +343,58 @@ input[type=checkbox] {
         grid-template-columns: 1fr;
     }
 }
+
+/* スライダー全体のコンテナ */
+.slider-container {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 汎用的なカスタムスライダー本体（トラック） */
+input[type="range"].custom-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    background: #444444;
+    /* ダークグレーのトラック */
+    height: 6px;
+    border-radius: 3px;
+    border: none;
+    padding: 0;
+    margin: 8px 0;
+}
+
+/* つまみ（Thumb）- Webkit系 */
+input[type="range"].custom-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent-blue);
+    /* #0095ff */
+    cursor: pointer;
+    border: 2px solid #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    transition: transform 0.1s;
+}
+
+input[type="range"].custom-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+}
+
+/* つまみ（Thumb）- Firefox */
+input[type="range"].custom-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent-blue);
+    cursor: pointer;
+    border: 2px solid #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    transition: transform 0.1s;
+}
+
+input[type="range"].custom-slider::-moz-range-thumb:hover {
+    transform: scale(1.1);
+}

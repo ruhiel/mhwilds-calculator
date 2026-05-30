@@ -26,6 +26,9 @@ const inputElemHz = document.getElementById('inputElemHz');
 const tableBody = document.getElementById('motionTableBody');
 const checkNushi = document.getElementById('checkNushi');
 const checkCharm = document.getElementById('checkCharm');
+const inputFullChargeRate = document.getElementById('inputFullChargeRate');
+const fullChargeRateDisplay = document.getElementById('fullChargeRateDisplay');
+const fullChargeSliderContainer = document.getElementById('fullChargeSliderContainer');
 
 let skillAtkMult = 1.0;
 let skillAtkAdd = 0;
@@ -45,7 +48,6 @@ let seedAdd = 0;
 let powderAdd = 0;
 let sokubakuAtkAdd = 0;
 let rengekiKyoukaAdd = 0;
-// 復元ボーナスの各枠の値を保持するオブジェクト配列 (初期値はすべて0)
 let restorationBonuses = [
     { atk: 0, crit: 0, elem: 0 },
     { atk: 0, crit: 0, elem: 0 },
@@ -53,6 +55,7 @@ let restorationBonuses = [
     { atk: 0, crit: 0, elem: 0 },
     { atk: 0, crit: 0, elem: 0 }
 ];
+let fullChargeRate = 1.0; // 初期値100%
 
 window.stepHz = function (id, delta) {
     const el = document.getElementById(id);
@@ -104,7 +107,7 @@ function calculate() {
     baseCrit = baseCrit + restoreCritAdd;
     baseElem = baseElem + restoreElemAdd;
 
-    const totalAtk = Math.floor((baseAtk * skillAtkMult * shuseiMult * nushiMult) + skillAtkAdd + challengerAtkAdd + fullChargeAdd + rengekiAtkAdd + buffAdd + charmAdd + drugAdd + seedAdd + powderAdd + sokubakuAtkAdd + rengekiKyoukaAdd);
+    const totalAtk = Math.floor((baseAtk * skillAtkMult * shuseiMult * nushiMult) + skillAtkAdd + challengerAtkAdd + getFullChargeAdd() + rengekiAtkAdd + buffAdd + charmAdd + drugAdd + seedAdd + powderAdd + sokubakuAtkAdd + rengekiKyoukaAdd);
     const totalElem = (baseElem + rengekiElemAdd);
     const effElemDisplay = totalElem * 0.1 * sharpElem;
 
@@ -198,6 +201,12 @@ setupDropdown('shuseiTrigger', 'shuseiMenu', (item) => {
 });
 setupDropdown('fullChargeTrigger', 'fullChargeMenu', (item) => {
     fullChargeAdd = parseInt(item.getAttribute('data-add'));
+    const lv = item.getAttribute('data-lv');
+    if (lv === "未選択") {
+        fullChargeSliderContainer.style.display = 'none';
+    } else {
+        fullChargeSliderContainer.style.display = 'block';
+    }
 });
 setupDropdown('buffTrigger', 'buffMenu', (item) => {
     buffAdd = parseInt(item.getAttribute('data-add'));
@@ -248,5 +257,17 @@ for (let i = 1; i <= 5; i++) {
         };
     });
 }
+if (inputFullChargeRate) {
+    inputFullChargeRate.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value);
+        fullChargeRateDisplay.textContent = val + '%';
+        fullChargeRate = val / 100;
+        calculate();
+    });
+}
+function getFullChargeAdd() {
+    return Math.floor(fullChargeAdd * fullChargeRate);
+}
+
 initTable();
 calculate();

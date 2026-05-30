@@ -205,8 +205,18 @@ setupDropdown('fullChargeTrigger', 'fullChargeMenu', (item) => {
     if (lv === "未選択") {
         fullChargeSliderContainer.style.display = 'none';
     } else {
+        // 非表示から表示に切り替わるときに、値を100%に強制リセット
+        fullChargeRate = 1.0;
+        if (inputFullChargeRate) {
+            inputFullChargeRate.value = 100; // スライダーのつまみを100に移動
+        }
+        if (fullChargeRateDisplay) {
+            fullChargeRateDisplay.textContent = '100%'; // 表示テキストを100%に更新
+        }
         fullChargeSliderContainer.style.display = 'block';
     }
+    // スキル選択が変更されたので再計算
+    calculate();
 });
 setupDropdown('buffTrigger', 'buffMenu', (item) => {
     buffAdd = parseInt(item.getAttribute('data-add'));

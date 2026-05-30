@@ -29,6 +29,9 @@ const checkCharm = document.getElementById('checkCharm');
 const inputFullChargeRate = document.getElementById('inputFullChargeRate');
 const fullChargeRateDisplay = document.getElementById('fullChargeRateDisplay');
 const fullChargeSliderContainer = document.getElementById('fullChargeSliderContainer');
+const inputShuseiRate = document.getElementById('inputShuseiRate');
+const shuseiRateDisplay = document.getElementById('shuseiRateDisplay');
+const shuseiSliderContainer = document.getElementById('shuseiSliderContainer');
 
 let skillAtkMult = 1.0;
 let skillAtkAdd = 0;
@@ -55,7 +58,9 @@ let restorationBonuses = [
     { atk: 0, crit: 0, elem: 0 },
     { atk: 0, crit: 0, elem: 0 }
 ];
-let fullChargeRate = 1.0; // 初期値100%
+
+let fullChargeRate = 1.0;
+let shuseiRate = 1.0;
 
 window.stepHz = function (id, delta) {
     const el = document.getElementById(id);
@@ -107,7 +112,7 @@ function calculate() {
     baseCrit = baseCrit + restoreCritAdd;
     baseElem = baseElem + restoreElemAdd;
 
-    const totalAtk = Math.floor((baseAtk * skillAtkMult * shuseiMult * nushiMult) + skillAtkAdd + challengerAtkAdd + getFullChargeAdd() + rengekiAtkAdd + buffAdd + charmAdd + drugAdd + seedAdd + powderAdd + sokubakuAtkAdd + rengekiKyoukaAdd);
+    const totalAtk = Math.floor((baseAtk * skillAtkMult * getShuseiMult() * nushiMult) + skillAtkAdd + challengerAtkAdd + getFullChargeAdd() + rengekiAtkAdd + buffAdd + charmAdd + drugAdd + seedAdd + powderAdd + sokubakuAtkAdd + rengekiKyoukaAdd);
     const totalElem = (baseElem + rengekiElemAdd);
     const effElemDisplay = totalElem * 0.1 * sharpElem;
 
@@ -198,6 +203,22 @@ setupDropdown('cbTrigger', 'cbMenu', (item) => {
 });
 setupDropdown('shuseiTrigger', 'shuseiMenu', (item) => {
     shuseiMult = parseFloat(item.getAttribute('data-mult'));
+    const lv = item.getAttribute('data-lv');
+    if (lv === "未選択") {
+        shuseiSliderContainer.style.display = 'none';
+    } else {
+        // 非表示から表示に切り替わるときに、値を100%に強制リセット
+        shuseiRate = 1.0;
+        if (inputShuseiRate) {
+            inputShuseiRate.value = 100; // スライダーのつまみを100に移動
+        }
+        if (shuseiRateDisplay) {
+            shuseiRateDisplay.textContent = '100%'; // 表示テキストを100%に更新
+        }
+        shuseiSliderContainer.style.display = 'block';
+    }
+    // スキル選択が変更されたので再計算
+    calculate();
 });
 setupDropdown('fullChargeTrigger', 'fullChargeMenu', (item) => {
     fullChargeAdd = parseInt(item.getAttribute('data-add'));
@@ -275,9 +296,19 @@ if (inputFullChargeRate) {
         calculate();
     });
 }
+if (inputShuseiRate) {
+    inputShuseiRate.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value);
+        shuseiRateDisplay.textContent = val + '%';
+        shuseiRate = val / 100;
+        calculate();
+    });
+}
 function getFullChargeAdd() {
     return Math.floor(fullChargeAdd * fullChargeRate);
 }
-
+function getShuseiMult() {
+    return 1.0 + ((shuseiMult - 1.0) * shuseiRate);
+}
 initTable();
 calculate();

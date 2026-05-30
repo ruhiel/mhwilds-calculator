@@ -32,6 +32,9 @@ const fullChargeSliderContainer = document.getElementById('fullChargeSliderConta
 const inputShuseiRate = document.getElementById('inputShuseiRate');
 const shuseiRateDisplay = document.getElementById('shuseiRateDisplay');
 const shuseiSliderContainer = document.getElementById('shuseiSliderContainer');
+const inputKonshinRate = document.getElementById('inputKonshinRate');
+const konshinRateDisplay = document.getElementById('konshinRateDisplay');
+const konshinSliderContainer = document.getElementById('konshinSliderContainer');
 
 let skillAtkMult = 1.0;
 let skillAtkAdd = 0;
@@ -61,6 +64,7 @@ let restorationBonuses = [
 
 let fullChargeRate = 1.0;
 let shuseiRate = 1.0;
+let konshinRate = 1.0;
 
 window.stepHz = function (id, delta) {
     const el = document.getElementById(id);
@@ -116,7 +120,7 @@ function calculate() {
     const totalElem = (baseElem + rengekiElemAdd);
     const effElemDisplay = totalElem * 0.1 * sharpElem;
 
-    const rawCrit = baseCrit + challengerCritBonus + eyeCritBonus + weakCritBonus + konshinCritBonus;
+    const rawCrit = baseCrit + challengerCritBonus + eyeCritBonus + weakCritBonus + getKonshinCritBonus();
     const cappedCrit = Math.min(100, Math.max(0, rawCrit));
     const critDec = cappedCrit / 100;
 
@@ -197,6 +201,22 @@ setupDropdown('weakTrigger', 'weakMenu', (item) => {
 });
 setupDropdown('konshinTrigger', 'konshinMenu', (item) => {
     konshinCritBonus = parseInt(item.getAttribute('data-crit'));
+    const lv = item.getAttribute('data-lv');
+    if (lv === "未選択") {
+        konshinSliderContainer.style.display = 'none';
+    } else {
+        // 非表示から表示に切り替わるときに、値を100%に強制リセット
+        konshinRate = 1.0;
+        if (inputKonshinRate) {
+            inputKonshinRate.value = 100; // スライダーのつまみを100に移動
+        }
+        if (konshinRateDisplay) {
+            konshinRateDisplay.textContent = '100%'; // 表示テキストを100%に更新
+        }
+        konshinSliderContainer.style.display = 'block';
+    }
+    // スキル選択が変更されたので再計算
+    calculate();
 });
 setupDropdown('cbTrigger', 'cbMenu', (item) => {
     critDamageMult = parseFloat(item.getAttribute('data-mult'));
@@ -304,11 +324,23 @@ if (inputShuseiRate) {
         calculate();
     });
 }
+if (inputKonshinRate) {
+    inputKonshinRate.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value);
+        konshinRateDisplay.textContent = val + '%';
+        konshinRate = val / 100;
+        calculate();
+    });
+}
 function getFullChargeAdd() {
     return Math.floor(fullChargeAdd * fullChargeRate);
 }
 function getShuseiMult() {
     return 1.0 + ((shuseiMult - 1.0) * shuseiRate);
 }
+function getKonshinCritBonus() {
+    return Math.floor(konshinCritBonus * konshinRate);
+}
+
 initTable();
 calculate();

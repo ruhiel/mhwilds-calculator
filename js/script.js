@@ -39,10 +39,10 @@ let shuseiMult = 1.0;
 let fullChargeAdd = 0;
 let rengekiAtkAdd = 0;
 let rengekiElemAdd = 0;
-let buffAdd = 5;
-let drugAdd = 7;
-let seedAdd = 10;
-let powderAdd = 10;
+let buffAdd = 0;
+let drugAdd = 0;
+let seedAdd = 0;
+let powderAdd = 0;
 let sokubakuAtkAdd = 0;
 let rengekiKyoukaAdd = 0;
 // 復元ボーナスの各枠の値を保持するオブジェクト配列 (初期値はすべて0)
@@ -103,7 +103,7 @@ function calculate() {
     baseAtk = baseAtk + restoreAtkAdd;
     baseCrit = baseCrit + restoreCritAdd;
     baseElem = baseElem + restoreElemAdd;
-    
+
     const totalAtk = Math.floor((baseAtk * skillAtkMult * shuseiMult * nushiMult) + skillAtkAdd + challengerAtkAdd + fullChargeAdd + rengekiAtkAdd + buffAdd + charmAdd + drugAdd + seedAdd + powderAdd + sokubakuAtkAdd + rengekiKyoukaAdd);
     const totalElem = (baseElem + rengekiElemAdd);
     const effElemDisplay = totalElem * 0.1 * sharpElem;

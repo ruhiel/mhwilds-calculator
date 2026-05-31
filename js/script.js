@@ -35,6 +35,9 @@ const shuseiSliderContainer = document.getElementById('shuseiSliderContainer');
 const inputKonshinRate = document.getElementById('inputKonshinRate');
 const konshinRateDisplay = document.getElementById('konshinRateDisplay');
 const konshinSliderContainer = document.getElementById('konshinSliderContainer');
+const inputChallengerRate = document.getElementById('inputChallengerRate');
+const challengerRateDisplay = document.getElementById('challengerRateDisplay');
+const challengerSliderContainer = document.getElementById('challengerSliderContainer');
 
 let skillAtkMult = 1.0;
 let skillAtkAdd = 0;
@@ -65,6 +68,7 @@ let restorationBonuses = [
 let fullChargeRate = 1.0;
 let shuseiRate = 1.0;
 let konshinRate = 1.0;
+let challengerRate = 1.0;
 
 window.stepHz = function (id, delta) {
     const el = document.getElementById(id);
@@ -116,11 +120,11 @@ function calculate() {
     baseCrit = baseCrit + restoreCritAdd;
     baseElem = baseElem + restoreElemAdd;
 
-    const totalAtk = Math.floor((baseAtk * skillAtkMult * getShuseiMult() * nushiMult) + skillAtkAdd + challengerAtkAdd + getFullChargeAdd() + rengekiAtkAdd + buffAdd + charmAdd + drugAdd + seedAdd + powderAdd + sokubakuAtkAdd + rengekiKyoukaAdd);
+    const totalAtk = Math.floor((baseAtk * skillAtkMult * getShuseiMult() * nushiMult) + skillAtkAdd + getChallengerAtkAdd() + getFullChargeAdd() + rengekiAtkAdd + buffAdd + charmAdd + drugAdd + seedAdd + powderAdd + sokubakuAtkAdd + rengekiKyoukaAdd);
     const totalElem = (baseElem + rengekiElemAdd);
     const effElemDisplay = totalElem * 0.1 * sharpElem;
 
-    const rawCrit = baseCrit + challengerCritBonus + eyeCritBonus + weakCritBonus + getKonshinCritBonus();
+    const rawCrit = baseCrit + getChallengerCritBonus() + eyeCritBonus + weakCritBonus + getKonshinCritBonus();
     const cappedCrit = Math.min(100, Math.max(0, rawCrit));
     const critDec = cappedCrit / 100;
 
@@ -188,6 +192,22 @@ setupDropdown('atkSkillTrigger', 'atkSkillMenu', (item) => {
 setupDropdown('challengerTrigger', 'challengerMenu', (item) => {
     challengerAtkAdd = parseInt(item.getAttribute('data-atk'));
     challengerCritBonus = parseInt(item.getAttribute('data-crit'));
+    const lv = item.getAttribute('data-lv');
+    if (lv === "未選択") {
+        challengerSliderContainer.style.display = 'none';
+    } else {
+        // 非表示から表示に切り替わるときに、値を100%に強制リセット
+        challengerRate = 1.0;
+        if (inputChallengerRate) {
+            inputChallengerRate.value = 100; // スライダーのつまみを100に移動
+        }
+        if (challengerRateDisplay) {
+            challengerRateDisplay.textContent = '100%'; // 表示テキストを100%に更新
+        }
+        challengerSliderContainer.style.display = 'block';
+    }
+    // スキル選択が変更されたので再計算
+    calculate();
 });
 setupDropdown('rengekiTrigger', 'rengekiMenu', (item) => {
     rengekiAtkAdd = parseInt(item.getAttribute('data-atk'));
@@ -332,6 +352,14 @@ if (inputKonshinRate) {
         calculate();
     });
 }
+if (inputChallengerRate) {
+    inputChallengerRate.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value);
+        challengerRateDisplay.textContent = val + '%';
+        challengerRate = val / 100;
+        calculate();
+    });
+}
 function getFullChargeAdd() {
     return Math.floor(fullChargeAdd * fullChargeRate);
 }
@@ -341,6 +369,11 @@ function getShuseiMult() {
 function getKonshinCritBonus() {
     return Math.floor(konshinCritBonus * konshinRate);
 }
-
+function getChallengerAtkAdd() {
+    return Math.floor(challengerAtkAdd * challengerRate);
+}
+function getChallengerCritBonus() {
+    return Math.floor(challengerCritBonus * challengerRate);
+}
 initTable();
 calculate();

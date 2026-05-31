@@ -76,7 +76,10 @@ let weakRate = 1.0;
 
 window.stepHz = function (id, delta) {
     const el = document.getElementById(id);
-    el.value = Math.max(0, parseInt(el.value) + delta);
+    el.value = Math.min(
+        100,
+        Math.max(0, parseInt(el.value) + delta)
+    );
     calculate();
 };
 
@@ -389,22 +392,22 @@ if (inputWeakRate) {
     });
 }
 function getFullChargeAdd() {
-    return Math.floor(fullChargeAdd * fullChargeRate);
+    return fullChargeAdd * fullChargeRate;
 }
 function getShuseiMult() {
     return 1.0 + ((shuseiMult - 1.0) * shuseiRate);
 }
 function getKonshinCritBonus() {
-    return Math.floor(konshinCritBonus * konshinRate);
+    return konshinCritBonus * konshinRate;
 }
 function getChallengerAtkAdd() {
-    return Math.floor(challengerAtkAdd * challengerRate);
+    return challengerAtkAdd * challengerRate;
 }
 function getChallengerCritBonus() {
-    return Math.floor(challengerCritBonus * challengerRate);
+    return challengerCritBonus * challengerRate;
 }
 function getWeakCritBonus() {
-    return Math.floor(weakCritBonus * weakRate);
+    return weakCritBonus * weakRate;
 }
 initTable();
 calculate();

@@ -38,6 +38,9 @@ const konshinSliderContainer = document.getElementById('konshinSliderContainer')
 const inputChallengerRate = document.getElementById('inputChallengerRate');
 const challengerRateDisplay = document.getElementById('challengerRateDisplay');
 const challengerSliderContainer = document.getElementById('challengerSliderContainer');
+const inputWeakRate = document.getElementById('inputWeakRate');
+const weakRateDisplay = document.getElementById('weakRateDisplay');
+const weakSliderContainer = document.getElementById('weakSliderContainer');
 
 let skillAtkMult = 1.0;
 let skillAtkAdd = 0;
@@ -69,6 +72,7 @@ let fullChargeRate = 1.0;
 let shuseiRate = 1.0;
 let konshinRate = 1.0;
 let challengerRate = 1.0;
+let weakRate = 1.0;
 
 window.stepHz = function (id, delta) {
     const el = document.getElementById(id);
@@ -124,7 +128,7 @@ function calculate() {
     const totalElem = (baseElem + rengekiElemAdd);
     const effElemDisplay = totalElem * 0.1 * sharpElem;
 
-    const rawCrit = baseCrit + getChallengerCritBonus() + eyeCritBonus + weakCritBonus + getKonshinCritBonus();
+    const rawCrit = baseCrit + getChallengerCritBonus() + eyeCritBonus + getWeakCritBonus() + getKonshinCritBonus();
     const cappedCrit = Math.min(100, Math.max(0, rawCrit));
     const critDec = cappedCrit / 100;
 
@@ -218,6 +222,22 @@ setupDropdown('eyeTrigger', 'eyeMenu', (item) => {
 });
 setupDropdown('weakTrigger', 'weakMenu', (item) => {
     weakCritBonus = parseInt(item.getAttribute('data-crit'));
+    const lv = item.getAttribute('data-lv');
+    if (lv === "未選択") {
+        weakSliderContainer.style.display = 'none';
+    } else {
+        // 非表示から表示に切り替わるときに、値を100%に強制リセット
+        weakRate = 1.0;
+        if (inputWeakRate) {
+            inputWeakRate.value = 100; // スライダーのつまみを100に移動
+        }
+        if (weakRateDisplay) {
+            weakRateDisplay.textContent = '100%'; // 表示テキストを100%に更新
+        }
+        weakSliderContainer.style.display = 'block';
+    }
+    // スキル選択が変更されたので再計算
+    calculate();
 });
 setupDropdown('konshinTrigger', 'konshinMenu', (item) => {
     konshinCritBonus = parseInt(item.getAttribute('data-crit'));
@@ -360,6 +380,14 @@ if (inputChallengerRate) {
         calculate();
     });
 }
+if (inputWeakRate) {
+    inputWeakRate.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value);
+        weakRateDisplay.textContent = val + '%';
+        weakRate = val / 100;
+        calculate();
+    });
+}
 function getFullChargeAdd() {
     return Math.floor(fullChargeAdd * fullChargeRate);
 }
@@ -374,6 +402,9 @@ function getChallengerAtkAdd() {
 }
 function getChallengerCritBonus() {
     return Math.floor(challengerCritBonus * challengerRate);
+}
+function getWeakCritBonus() {
+    return Math.floor(weakCritBonus * weakRate);
 }
 initTable();
 calculate();

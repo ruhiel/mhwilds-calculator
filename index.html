@@ -374,6 +374,16 @@
                                 <div class="option-item" data-lv="Lv 4" data-crit="20">Lv 4</div>
                                 <div class="option-item" data-lv="Lv 5" data-crit="30">Lv 5</div>
                             </div>
+                            <div class="slider-container" id="weakSliderContainer"
+                                style="display:none; padding: 0 5px 10px 5px;">
+                                <div
+                                    style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-sub); margin-bottom: 2px;">
+                                    <span>稼働率</span>
+                                    <span id="weakRateDisplay">100%</span>
+                                </div>
+                                <input type="range" id="inputWeakRate" class="custom-slider" min="0" max="100" step="10"
+                                    value="100" style="cursor: pointer; height: 6px;">
+                            </div>
                         </div>
                         <div class="skill-container">
                             <div class="skill-selector is-empty" id="konshinTrigger">

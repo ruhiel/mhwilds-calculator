@@ -434,31 +434,35 @@
             <div class="card">
                 <div class="card-header">
                     <span>属性系スキル</span>
+                    <button class="toggle-btn" id="toggleEleSkills">
+                        <span id="toggleElemIcon">▼</span>
+                    </button>
                 </div>
-
-                <div class="skills-row-grid">
-                    <div class="skill-container">
-                        <div class="skill-selector is-empty" id="elemAtkTrigger">
-                            <span class="skill-name">属性攻撃強化</span>
-                            <span class="skill-level-preview">未選択</span>
-                            <span class="skill-dropdown-arrow">▼</span>
-                        </div>
-
-                        <div class="skill-options" id="elemAtkMenu">
-                            <div class="option-item selected" data-lv="未選択" data-mult="1.0" data-add="0">
-                                未選択
+                <div class="collapsible-body" id="eleSkillsBody">
+                    <div class="skills-row-grid">
+                        <div class="skill-container">
+                            <div class="skill-selector is-empty" id="elemAtkTrigger">
+                                <span class="skill-name">属性攻撃強化</span>
+                                <span class="skill-level-preview">未選択</span>
+                                <span class="skill-dropdown-arrow">▼</span>
                             </div>
 
-                            <div class="option-item" data-lv="Lv 1" data-mult="1.0" data-add="40">
-                                Lv 1
-                            </div>
+                            <div class="skill-options" id="elemAtkMenu">
+                                <div class="option-item selected" data-lv="未選択" data-mult="1.0" data-add="0">
+                                    未選択
+                                </div>
 
-                            <div class="option-item" data-lv="Lv 2" data-mult="1.1" data-add="40">
-                                Lv 2
-                            </div>
+                                <div class="option-item" data-lv="Lv 1" data-mult="1.0" data-add="40">
+                                    Lv 1
+                                </div>
 
-                            <div class="option-item" data-lv="Lv 3" data-mult="1.2" data-add="60">
-                                Lv 3
+                                <div class="option-item" data-lv="Lv 2" data-mult="1.1" data-add="40">
+                                    Lv 2
+                                </div>
+
+                                <div class="option-item" data-lv="Lv 3" data-mult="1.2" data-add="60">
+                                    Lv 3
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -368,6 +368,8 @@ setupHiddenButton('toggleAtkSkills', 'atkSkillsBody', 'toggleAtkIcon');
 
 setupHiddenButton('toggleCrtSkills', 'critSkillsBody', 'toggleCritIcon');
 
+setupHiddenButton('toggleEleSkills', 'eleSkillsBody', 'toggleElemIcon');
+
 setupHiddenButton('toggleEtcSkills', 'etcSkillsBody', 'toggleEtcIcon');
 
 setupHiddenButton('toggleBuffs', 'buffBody', 'toggleBuffIcon');

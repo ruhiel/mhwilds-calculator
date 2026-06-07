@@ -60,6 +60,8 @@ let seedAdd = 0;
 let powderAdd = 0;
 let sokubakuAtkAdd = 0;
 let rengekiKyoukaAdd = 0;
+let kokushokuIttaiAdd = 0;
+let mugaCritBonus = 0;
 let restorationBonuses = [
     { atk: 0, crit: 0, elem: 0 },
     { atk: 0, crit: 0, elem: 0 },
@@ -73,6 +75,9 @@ let shuseiRate = 1.0;
 let konshinRate = 1.0;
 let challengerRate = 1.0;
 let weakRate = 1.0;
+
+let elemAtkMult = 1.0;
+let elemAtkAdd = 0;
 
 window.stepHz = function (id, delta) {
     const el = document.getElementById(id);
@@ -127,15 +132,37 @@ function calculate() {
     baseCrit = baseCrit + restoreCritAdd;
     baseElem = baseElem + restoreElemAdd;
 
-    const totalAtk = Math.floor((baseAtk * skillAtkMult * getShuseiMult() * nushiMult) + skillAtkAdd + getChallengerAtkAdd() + getFullChargeAdd() + rengekiAtkAdd + buffAdd + charmAdd + drugAdd + seedAdd + powderAdd + sokubakuAtkAdd + rengekiKyoukaAdd);
-    const totalElem = (baseElem + rengekiElemAdd);
+    const totalAtk = Math.floor(
+        (baseAtk * skillAtkMult * getShuseiMult() * nushiMult)
+        + skillAtkAdd
+        + getChallengerAtkAdd()
+        + getFullChargeAdd()
+        + rengekiAtkAdd
+        + buffAdd
+        + charmAdd
+        + drugAdd
+        + seedAdd
+        + powderAdd
+        + sokubakuAtkAdd
+        + rengekiKyoukaAdd
+        + kokushokuIttaiAdd
+    );
+    const totalElem = Math.floor(baseElem * elemAtkMult) + elemAtkAdd + rengekiElemAdd;
+
     const effElemDisplay = totalElem * 0.1 * sharpElem;
 
-    const rawCrit = baseCrit + getChallengerCritBonus() + eyeCritBonus + getWeakCritBonus() + getKonshinCritBonus();
+    const rawCrit =
+        baseCrit +
+        getChallengerCritBonus() +
+        eyeCritBonus +
+        getWeakCritBonus() +
+        getKonshinCritBonus() +
+        mugaCritBonus;
     const cappedCrit = Math.min(100, Math.max(0, rawCrit));
     const critDec = cappedCrit / 100;
 
     document.getElementById('displayTotalAtk').textContent = totalAtk;
+    document.getElementById('displayTotalElem').textContent = totalElem;
     const effAtk = totalAtk * sharpPhys * (1 + (critDamageMult - 1) * critDec);
     document.getElementById('displayEffAtk').textContent = effAtk.toFixed(1);
     document.getElementById('displayEffCrit').textContent = cappedCrit + '%';
@@ -320,6 +347,17 @@ setupDropdown('sokubakuTrigger', 'sokubakuMenu', (item) => {
 setupDropdown('rengekiKyoukaTrigger', 'rengekiKyoukaMenu', (item) => {
     rengekiKyoukaAdd = parseInt(item.getAttribute('data-add'));
 });
+setupDropdown('kokushokuTrigger', 'kokushokuMenu', (item) => {
+    kokushokuIttaiAdd = parseInt(item.getAttribute('data-atk')) || 0;
+});
+setupDropdown('mugaTrigger', 'mugaMenu', (item) => {
+    mugaCritBonus = parseInt(item.getAttribute('data-crit')) || 0;
+});
+setupDropdown('elemAtkTrigger', 'elemAtkMenu', (item) => {
+    elemAtkMult = parseFloat(item.dataset.mult) || 1.0;
+    elemAtkAdd = parseInt(item.dataset.add) || 0;
+});
+
 window.addEventListener('click', () => {
     document.querySelectorAll('.skill-options').forEach(m => m.classList.remove('show'));
 });

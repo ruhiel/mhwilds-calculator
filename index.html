@@ -210,6 +210,10 @@
                             style="font-size: 20px; font-weight: bold; color: var(--accent-blue);">0</div>
                     </div>
                     <div>
+                        <label>属性値</label>
+                        <div id="displayTotalElem" style="font-size: 20px; font-weight: bold; color: #a0d911;">0</div>
+                    </div>
+                    <div>
                         <label>実効物理期待値</label>
                         <div id="displayEffAtk" style="font-size: 20px; font-weight: bold; color: var(--accent-blue);">0
                         </div>
@@ -429,6 +433,40 @@
 
             <div class="card">
                 <div class="card-header">
+                    <span>属性系スキル</span>
+                </div>
+
+                <div class="skills-row-grid">
+                    <div class="skill-container">
+                        <div class="skill-selector is-empty" id="elemAtkTrigger">
+                            <span class="skill-name">属性攻撃強化</span>
+                            <span class="skill-level-preview">未選択</span>
+                            <span class="skill-dropdown-arrow">▼</span>
+                        </div>
+
+                        <div class="skill-options" id="elemAtkMenu">
+                            <div class="option-item selected" data-lv="未選択" data-mult="1.0" data-add="0">
+                                未選択
+                            </div>
+
+                            <div class="option-item" data-lv="Lv 1" data-mult="1.0" data-add="40">
+                                Lv 1 (+40)
+                            </div>
+
+                            <div class="option-item" data-lv="Lv 2" data-mult="1.1" data-add="40">
+                                Lv 2 (×1.1 +40)
+                            </div>
+
+                            <div class="option-item" data-lv="Lv 3" data-mult="1.2" data-add="60">
+                                Lv 3 (×1.2 +60)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
                     <span>複合効果スキル</span>
                     <button class="toggle-btn" id="toggleEtcSkills">
                         <span id="toggleEtcIcon">▼</span>
@@ -474,6 +512,30 @@
                                 <div class="option-item" data-lv="Lv 3" data-atk="12" data-elem="100">Lv 3</div>
                                 <div class="option-item" data-lv="Lv 4" data-atk="15" data-elem="120">Lv 4</div>
                                 <div class="option-item" data-lv="Lv 5" data-atk="18" data-elem="140">Lv 5</div>
+                            </div>
+                        </div>
+                        <div class="skill-container">
+                            <div class="skill-selector is-empty" id="kokushokuTrigger">
+                                <span class="skill-name">黒蝕一体</span>
+                                <span class="skill-level-preview">未選択</span>
+                                <span class="skill-dropdown-arrow">▼</span>
+                            </div>
+                            <div class="skill-options" id="kokushokuMenu">
+                                <div class="option-item selected" data-lv="未選択" data-atk="0">未選択</div>
+                                <div class="option-item" data-lv="Ⅱ" data-atk="15">Ⅱ</div>
+                            </div>
+                        </div>
+                        <div class="skill-container">
+                            <div class="skill-selector is-empty" id="mugaTrigger">
+                                <span class="skill-name">無我の境地</span>
+                                <span class="skill-level-preview">未選択</span>
+                                <span class="skill-dropdown-arrow">▼</span>
+                            </div>
+                            <div class="skill-options" id="mugaMenu">
+                                <div class="option-item selected" data-lv="未選択" data-crit="0">未選択</div>
+                                <div class="option-item" data-lv="Lv1" data-crit="18">Lv1</div>
+                                <div class="option-item" data-lv="Lv2" data-crit="21">Lv2</div>
+                                <div class="option-item" data-lv="Lv3" data-crit="25">Lv3</div>
                             </div>
                         </div>
                     </div>

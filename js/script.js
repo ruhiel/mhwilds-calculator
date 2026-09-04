@@ -250,84 +250,81 @@ setupDropdown('rengekiTrigger', 'rengekiMenu', (item) => {
 setupDropdown('eyeTrigger', 'eyeMenu', (item) => {
     eyeCritBonus = parseInt(item.getAttribute('data-crit'));
 });
-setupDropdown('weakTrigger', 'weakMenu', (item) => {
-    weakCritBonus = parseInt(item.getAttribute('data-crit'));
-    const lv = item.getAttribute('data-lv');
-    if (lv === "未選択") {
-        weakSliderContainer.style.display = 'none';
-    } else {
-        // 非表示から表示に切り替わるときに、値を100%に強制リセット
-        weakRate = 1.0;
-        if (inputWeakRate) {
-            inputWeakRate.value = 100; // スライダーのつまみを100に移動
-        }
-        if (weakRateDisplay) {
-            weakRateDisplay.textContent = '100%'; // 表示テキストを100%に更新
-        }
-        weakSliderContainer.style.display = 'block';
-    }
-    // スキル選択が変更されたので再計算
-    calculate();
+setupSkillDropdown('cbTrigger', 'cbMenu', {
+    valueAttr: 'data-mult',
+    setValue: value => critDamageMult = value
 });
-setupDropdown('konshinTrigger', 'konshinMenu', (item) => {
-    konshinCritBonus = parseInt(item.getAttribute('data-crit'));
-    const lv = item.getAttribute('data-lv');
-    if (lv === "未選択") {
-        konshinSliderContainer.style.display = 'none';
-    } else {
-        // 非表示から表示に切り替わるときに、値を100%に強制リセット
-        konshinRate = 1.0;
-        if (inputKonshinRate) {
-            inputKonshinRate.value = 100; // スライダーのつまみを100に移動
+function setupSkillDropdown(triggerId, menuId, {
+    valueAttr,
+    setValue,
+    sliderContainer,
+    rateSetter,
+    inputRate,
+    rateDisplay
+}) {
+    setupDropdown(triggerId, menuId, (item) => {
+
+        // スキル値を設定
+        setValue(parseFloat(item.getAttribute(valueAttr)));
+
+        // スライダーがあるスキルの場合
+        if (sliderContainer) {
+            const lv = item.getAttribute('data-lv');
+
+            if (lv === "未選択") {
+                sliderContainer.style.display = 'none';
+            } else {
+                // スライダー値を100%にリセット
+                rateSetter(1.0);
+
+                if (inputRate) {
+                    inputRate.value = 100;
+                }
+
+                if (rateDisplay) {
+                    rateDisplay.textContent = '100%';
+                }
+
+                sliderContainer.style.display = 'block';
+            }
         }
-        if (konshinRateDisplay) {
-            konshinRateDisplay.textContent = '100%'; // 表示テキストを100%に更新
-        }
-        konshinSliderContainer.style.display = 'block';
-    }
-    // スキル選択が変更されたので再計算
-    calculate();
+
+        // 再計算
+        calculate();
+    });
+}
+
+setupSkillDropdown('weakTrigger', 'weakMenu', {
+    valueAttr: 'data-crit',
+    setValue: value => weakCritBonus = value,
+    sliderContainer: weakSliderContainer,
+    rateSetter: value => weakRate = value,
+    inputRate: inputWeakRate,
+    rateDisplay: weakRateDisplay
 });
-setupDropdown('cbTrigger', 'cbMenu', (item) => {
-    critDamageMult = parseFloat(item.getAttribute('data-mult'));
+setupSkillDropdown('konshinTrigger', 'konshinMenu', {
+    valueAttr: 'data-crit',
+    setValue: value => konshinCritBonus = value,
+    sliderContainer: konshinSliderContainer,
+    rateSetter: value => konshinRate = value,
+    inputRate: inputKonshinRate,
+    rateDisplay: konshinRateDisplay
 });
-setupDropdown('shuseiTrigger', 'shuseiMenu', (item) => {
-    shuseiMult = parseFloat(item.getAttribute('data-mult'));
-    const lv = item.getAttribute('data-lv');
-    if (lv === "未選択") {
-        shuseiSliderContainer.style.display = 'none';
-    } else {
-        // 非表示から表示に切り替わるときに、値を100%に強制リセット
-        shuseiRate = 1.0;
-        if (inputShuseiRate) {
-            inputShuseiRate.value = 100; // スライダーのつまみを100に移動
-        }
-        if (shuseiRateDisplay) {
-            shuseiRateDisplay.textContent = '100%'; // 表示テキストを100%に更新
-        }
-        shuseiSliderContainer.style.display = 'block';
-    }
-    // スキル選択が変更されたので再計算
-    calculate();
+setupSkillDropdown('shuseiTrigger', 'shuseiMenu', {
+    valueAttr: 'data-mult',
+    setValue: value => shuseiMult = value,
+    sliderContainer: shuseiSliderContainer,
+    rateSetter: value => shuseiRate = value,
+    inputRate: inputShuseiRate,
+    rateDisplay: shuseiRateDisplay
 });
-setupDropdown('fullChargeTrigger', 'fullChargeMenu', (item) => {
-    fullChargeAdd = parseInt(item.getAttribute('data-add'));
-    const lv = item.getAttribute('data-lv');
-    if (lv === "未選択") {
-        fullChargeSliderContainer.style.display = 'none';
-    } else {
-        // 非表示から表示に切り替わるときに、値を100%に強制リセット
-        fullChargeRate = 1.0;
-        if (inputFullChargeRate) {
-            inputFullChargeRate.value = 100; // スライダーのつまみを100に移動
-        }
-        if (fullChargeRateDisplay) {
-            fullChargeRateDisplay.textContent = '100%'; // 表示テキストを100%に更新
-        }
-        fullChargeSliderContainer.style.display = 'block';
-    }
-    // スキル選択が変更されたので再計算
-    calculate();
+setupSkillDropdown('fullChargeTrigger', 'fullChargeMenu', {
+    valueAttr: 'data-add',
+    setValue: value => fullChargeAdd = value,
+    sliderContainer: fullChargeSliderContainer,
+    rateSetter: value => fullChargeRate = value,
+    inputRate: inputFullChargeRate,
+    rateDisplay: fullChargeRateDisplay
 });
 setupDropdown('buffTrigger', 'buffMenu', (item) => {
     buffAdd = parseInt(item.getAttribute('data-add'));
